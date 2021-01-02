@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="ISO-8859-15"?>
+<OX>
+    <OXMENU id="NAVIGATION_ESHOPADMIN">
+        <MAINMENU id="mxmainmenu">
+            <SUBMENU id="mxmanufacturer" cl="manufacturer" list="manufacturer_list">
+                <TAB id="navi_rs_solr_manufacturer" 
+                    cl="rs_formedit_halfpage"
+                    clparam="project=rs/solr/formeditprojects/manufacturers.cpf&amp;useindex=index2value" />
+                />
+            </SUBMENU>
+        </MAINMENU>
+        <MAINMENU id="mxmanageprod">
+            <SUBMENU id="mxcategories" cl="category" list="category_list">
+                <TAB id="navi_rs_solr_categorie" 
+                    cl="rs_formedit_halfpage"
+                    clparam="project=rs/solr/formeditprojects/categories.cpf&amp;useindex=index2value" />
+                />
+            </SUBMENU>
+        </MAINMENU>
+    </OXMENU>
+    <OXMENU id="navi_rs_company">
+        <MAINMENU id="navi_rs_solr">
+            <SUBMENU id="navi_rs_solr_test" cl="rs_solr_test" />
+            <SUBMENU id="navi_rs_solr_import" cl="rs_solr_import" />
+        </MAINMENU>
+    </OXMENU>
+</OX>

@@ -1,0 +1,26 @@
+{
+  "name": "rs/solr",
+  "description": "solr",
+  "type": "oxideshop-module",
+  "minimum-stability": "stable",
+  "keywords": ["oxid", "modules", "eShop"],
+  "homepage": "https://www.reisacher-software.de",
+  "license": [
+    "GPL-3.0-only",
+    "proprietary"
+  ],
+  "extra": {
+    "oxideshop": {
+      "target-directory": "rs/solr"
+    }
+  },
+  "require": {
+    "php": ">=7.0",
+    "solarium/solarium": "^6.0.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "rs\\solr\\": "../../../source/modules/rs/solr"
+    }
+  }
+}
