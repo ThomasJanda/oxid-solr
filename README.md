@@ -5,127 +5,65 @@
 Implement/replace search, inclusive suggest list, categorie listing and manufacturer listing 
 trought a solr  instance. 
 
+Used third party projects: 
+
     https://lucene.apache.org/solr/
     https://github.com/solariumphp/solarium
+    http://ionden.com/a/plugins/ion.rangeSlider/demo.html
+
+This extension need
+
+    https://github.com/ThomasJanda/oxid-formedit
 
 This extension was created for Oxid 6.2, Wave theme.
 
 
 ## Install
 
-1. Install solr server on your web space. Contact your hosting provider how you 
-have to do this and how you can configure/get access to it.
+1. Install solr server on your web space. Contact your hosting provider how you have to do this and how you can configure/get access to it.
 
-2. Install module in your shop
+2. Create core within the solr server (in this case, you create a core called "oxid")
+
+    sudo su - solr -c "/opt/solr/bin/solr create -c oxid"
+    /opt/solr/bin/solr config -c oxid -p 8983 -action set-user-property -property update.autoCreateFields -value false
+
+3. Install module in your shop
 
         composer config repositories.rs/solr git https://github.com/ThomasJanda/oxid-solr/
         composer require rs/solr:dev-master --update-no-dev --ignore-platform-reqs
+        vendor/bin/oe-console oe:module:install-configuration source/modules/rs/solr
 
-6. 
-        
-6. Enable module in the oxid admin area, Extensions => Modules
-7. Changes settings in the module itself
+4. Execute following within your DB environment
 
+    CREATE TABLE `rssolr_facets_categories` (
+     `oxid` char(32) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
+     `rsfacete` char(50) CHARACTER SET latin1 COLLATE latin1_general_ci DEFAULT NULL,
+     `rstype` enum('checkbox_list','range_slider','range_slider_numeric','range_slider_currency','selectbox','custom_template') NOT NULL DEFAULT 'checkbox_list',
+     `rscustom` varchar(50) DEFAULT NULL,
+     `rssort` int(11) NOT NULL DEFAULT 0,
+     `f_oxcategories` char(32) CHARACTER SET latin1 COLLATE latin1_general_ci DEFAULT NULL,
+     PRIMARY KEY (`oxid`),
+     KEY `f_oxcategories` (`f_oxcategories`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+    CREATE TABLE `rssolr_facets_manufacturers` (
+     `oxid` char(32) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
+     `rsfacete` char(50) CHARACTER SET latin1 COLLATE latin1_general_ci DEFAULT NULL,
+     `rstype` enum('checkbox_list','range_slider','range_slider_numeric','range_slider_currency','selectbox','custom_template') NOT NULL DEFAULT 'checkbox_list',
+     `rscustom` varchar(50) DEFAULT NULL,
+     `rssort` int(11) NOT NULL DEFAULT 0,
+     `f_oxmanufacturer` char(32) CHARACTER SET latin1 COLLATE latin1_general_ci DEFAULT NULL,
+     PRIMARY KEY (`oxid`),
+     KEY `f_oxcategories` (`f_oxmanufacturer`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-## Manual optimization
+4. Enable module in the oxid admin area, Extensions => Modules. Setup the credentials to the solr server.
 
-Add to .htaccess at the end of the file
+5. Setup the solr instance with all nessecary information. Create the columns/fields in solr.
 
-        #cpOptimization module start
-        <IfModule mod_deflate.c>
-            AddOutputFilterByType DEFLATE text/html
-            AddOutputFilterByType DEFLATE text/css
-            AddOutputFilterByType DEFLATE text/javascript
-            AddOutputFilterByType DEFLATE application/javascript
-            AddOutputFilterByType DEFLATE application/x-javascript
-            AddOutputFilterByType DEFLATE image/svg+xml
-            AddOutputFilterByType DEFLATE application/javascript
-            AddOutputFilterByType DEFLATE application/rss+xml
-            AddOutputFilterByType DEFLATE application/vnd.ms-fontobject
-            AddOutputFilterByType DEFLATE application/x-font
-            AddOutputFilterByType DEFLATE application/x-font-opentype
-            AddOutputFilterByType DEFLATE application/x-font-otf
-            AddOutputFilterByType DEFLATE application/x-font-truetype
-            AddOutputFilterByType DEFLATE application/x-font-ttf
-            AddOutputFilterByType DEFLATE application/x-javascript
-            AddOutputFilterByType DEFLATE application/xhtml+xml
-            AddOutputFilterByType DEFLATE application/xml
-            AddOutputFilterByType DEFLATE font/opentype
-            AddOutputFilterByType DEFLATE font/otf
-            AddOutputFilterByType DEFLATE font/ttf
-            AddOutputFilterByType DEFLATE image/x-icon
-            AddOutputFilterByType DEFLATE text/plain
-            AddOutputFilterByType DEFLATE text/xml
-        </IfModule>
-        <IfModule mod_headers.c>
-            <FilesMatch "\.(eot|svg|ttf|woff|woff2)$">
-                Header set Cache-Control "max-age=15552000‬, public"
-            </FilesMatch>
-            <FilesMatch "\.(ico|jpg|jpeg|png|gif|swf)$">
-                Header set Cache-Control "max-age=15552000, public"
-            </FilesMatch>
-            <FilesMatch "\.(css|js)$">
-                Header set Cache-Control "max-age=15552000, public"
-            </FilesMatch>
-            Header unset ETag
-        </IfModule>
-        FileETag None
-        ServerSignature Off
-        #cpOptimization module end
-    
+    In the oxid admin area, go to "reisacher software" => "Solr" => "Import". Press the button "Setup".
 
+6. Import data to solr (this has to be made from time to time to keep the solr instance actuall)
 
-
-
-
-
-
-execute on shop root
-composer require solarium/solarium
-
-https://solarium.readthedocs.io/en/stable/queries/update-query/the-result-of-an-update-query/
-
-create new solr core:
-sudo su - solr -c "/opt/solr/bin/solr create -c oxid -n data_driven_schema_configs"
-
-sudo su - solr -c "/opt/solr/bin/solr create -c oxid"
-/opt/solr/bin/solr config -c oxid -p 8983 -action set-user-property -property update.autoCreateFields -value false
-
-
-
-
-//range slider
-http://ionden.com/a/plugins/ion.rangeSlider/demo.html
-
-
-
-# oxid6.2
-
-cli: 
-vendor/bin/oe-console oe:module:install-configuration source/modules/rs/solr
-
-
-
-
-
-## Install
-
-1. Copy files into following directory
-
-        source/modules/rs/solr
-
-        
-2. Add following to composer.json on the shop root
-
-        "autoload": {
-            "psr-4": {
-                "rs\\solr\\": "./source/modules/rs/solr"
-            }
-        },
-    
-3. Refresh autoloader files with composer.
-
-        composer dump-autoload
-        
-4. Enable module in the oxid admin area, Extensions => Modules
+    In the oxid admin area, go to "reisacher software" => "Solr" => "Import". Press the button "Delete all".
+    In the oxid admin area, go to "reisacher software" => "Solr" => "Import". Press the button "Import".
