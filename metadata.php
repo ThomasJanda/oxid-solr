@@ -118,6 +118,20 @@ $aModule = array(
             'name'  => 'rs-solr_search_display_manufacturers',
             'type'  => 'bool',
             'value' => true,
-        ),  
+        ), 
+        
+        array(
+            'group' => 'rs-solr_attribute',
+            'name'  => 'rs-solr_attribute_seperator',
+            'type'  => 'str',
+            'value' => "|",
+        ),    
+        
+        array(
+            'group' => 'rs-solr_import',
+            'name'  => 'rs-solr_import_offset',
+            'type'  => 'str',
+            'value' => "50",
+        ), 
     ),
 );

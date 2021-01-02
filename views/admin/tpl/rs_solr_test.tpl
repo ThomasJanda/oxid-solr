@@ -74,7 +74,10 @@
                     [{foreach from=$fs key=key item=value name=list}]
                         <tr>
                             <td>
-                                [{assign var=selected value=$key|in_array:$filtersettings}]
+                                [{assign var=selected value=false}]
+                                [{if $filtersettings|is_array}]
+                                    [{assign var=selected value=$key|in_array:$filtersettings}]
+                                [{/if}]
                                 <input type="checkbox" name="filtersettings[[{$smarty.foreach.list.index}]]" value="[{$key}]" [{if $selected}]checked selected[{/if}]> [{$value}]<br>
                             </td>
                             <td>

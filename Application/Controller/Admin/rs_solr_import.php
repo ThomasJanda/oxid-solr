@@ -24,7 +24,12 @@ class rs_solr_import extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
         $oRequest = oxNew(\OxidEsales\Eshop\Core\Request::class);
         
         $iStart = $oRequest->getRequestParameter("offset",0);
-        $iOffset = 30;
+        
+        $iOffset = (int) trim($this->getConfig()->getConfigParam('rs-solr_import_offset'));
+        if($iOffset <= 0)
+        {
+            $iOffset = 50;
+        }
         
         $oSolrImport = \rs\solr\Core\solr_connector::getImport();
         if($iStart===0)

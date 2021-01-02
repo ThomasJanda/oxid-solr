@@ -25,5 +25,11 @@ $aLang = array(
     'SHOP_MODULE_rs-solr_search_display_categories' => 'Zeige Kategorien',
     'SHOP_MODULE_rs-solr_search_display_manufacturers' => 'Zeige Hersteller',
     'SHOP_MODULE_rs-solr_search_display_price' => 'Zeige Preis Slider',
+    
+    'SHOP_MODULE_GROUP_rs-solr_attribute' => "Artikel Attribute",
+    'SHOP_MODULE_rs-solr_attribute_seperator' => "Wenn mehrer Werte in einem Attribute vorhanden sind, sind diese getrennt durch",
+    
+    'SHOP_MODULE_GROUP_rs-solr_import' => "Import",
+    'SHOP_MODULE_rs-solr_import_offset' => "Anzahl Artikel die beim Import bei einem Durchlauf gleichzeitig zum Solr Server gesendet werden",
 
 );

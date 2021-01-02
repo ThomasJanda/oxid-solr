@@ -4,7 +4,7 @@ namespace rs\solr\Core;
 
 class solr_import
 {
-    
+
     /**
      * @var \Solarium\Client
      */
@@ -17,16 +17,16 @@ class solr_import
      * @var \Solarium\Core\Query\AbstractQuery|\rs\solr\Core\solarium\solarium_update_query
      */
     protected $oSolrUpdate = null;
-    
+
     protected $oConfig = null;
-    
+
     public function __construct() {
         $this->oSolrClient = solr_connector::getSolrClient();
         //$this->oSolrUpdate = new \rs\solr\Core\solarium\solarium_update_query();
         $this->oSolrUpdate = $this->oSolrClient->createUpdate();
         $this->oSolrHelper = $this->oSolrUpdate->getHelper();
     }
-    
+
     /**
      * @return \Solarium\Client
      */
@@ -34,7 +34,7 @@ class solr_import
     {
         return $this->oSolrClient;
     }
-    
+
     /**
      * @return \Solarium\Core\Query\Helper
      */
@@ -42,7 +42,7 @@ class solr_import
     {
         return $this->oSolrHelper;
     }
-    
+
     /**
      * @return \Solarium\Core\Query\AbstractQuery|\Solarium\QueryType\Update\Query\Query
      */
@@ -50,7 +50,7 @@ class solr_import
     {
         return $this->oSolrUpdate;
     }
-    
+
     /**
      * @return \OxidEsales\EshopCommunity\Core\Database\Adapter\DatabaseInterface
      */
@@ -58,7 +58,7 @@ class solr_import
     {
         return \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
     }
-    
+
     /**
      * @return \OxidEsales\Eshop\Core\Config
      */
@@ -69,13 +69,13 @@ class solr_import
         }
         return $this->oConfig;
     }
-    
+
     public function setup()
     {
         $oSolrClient = \rs\solr\Core\solr_connector::getSolrClient();
-        
+
         //https://stackoverflow.com/questions/51781585/how-to-create-a-new-solr-core-in-laravel-solarium
-        
+
         $sUrl = $oSolrClient->getEndpoint()->getBaseUri();
 
         $aJsons=[];
@@ -87,7 +87,7 @@ class solr_import
                 "stored" => true,
                 "multiValued" => false,
                 "indexed" => true
-                ]
+            ]
         ];
         $aJsons[] =[
             "add-field" => [
@@ -96,7 +96,7 @@ class solr_import
                 "stored" => true,
                 "multiValued" => false,
                 "indexed" => true
-                ]
+            ]
         ];
         $aJsons[] =[
             "add-field" => [
@@ -105,7 +105,7 @@ class solr_import
                 "stored" => true,
                 "multiValued" => false,
                 "indexed" => true
-                ]
+            ]
         ];
         $aJsons[] =[
             "add-field" => [
@@ -114,7 +114,7 @@ class solr_import
                 "stored" => true,
                 "multiValued" => false,
                 "indexed" => true
-                ]
+            ]
         ];
         $aJsons[] =[
             "add-field" => [
@@ -123,7 +123,7 @@ class solr_import
                 "stored" => true,
                 "multiValued" => false,
                 "indexed" => true
-                ]
+            ]
         ];
         $aJsons[] =[
             "add-field" => [
@@ -132,7 +132,7 @@ class solr_import
                 "stored" => true,
                 "multiValued" => false,
                 "indexed" => true
-            ] 
+            ]
         ];
         $aJsons[] =[
             "add-field" => [
@@ -141,7 +141,7 @@ class solr_import
                 "stored" => true,
                 "multiValued" => false,
                 "indexed" => true
-            ] 
+            ]
         ];
         $aJsons[] =[
             "add-field" => [
@@ -150,7 +150,7 @@ class solr_import
                 "stored" => true,
                 "multiValued" => false,
                 "indexed" => true
-            ] 
+            ]
         ];
         $aJsons[] =[
             "add-field" => [
@@ -159,7 +159,7 @@ class solr_import
                 "stored" => true,
                 "multiValued" => false,
                 "indexed" => true
-            ] 
+            ]
         ];
         $aJsons[] =[
             "add-field" => [
@@ -168,7 +168,7 @@ class solr_import
                 "stored" => true,
                 "multiValued" => false,
                 "indexed" => true
-            ] 
+            ]
         ];
         $aJsons[] =[
             "add-field" => [
@@ -177,8 +177,8 @@ class solr_import
                 "stored" => true,
                 "multiValued" => false,
                 "indexed" => true
-            ] 
-        ]; 
+            ]
+        ];
         $aJsons[] =[
             "add-field" => [
                 "name" =>"oxarticles__oxvarselect",
@@ -186,8 +186,8 @@ class solr_import
                 "stored" => true,
                 "multiValued" => true,
                 "indexed" => true
-            ] 
-        ];    
+            ]
+        ];
         $aJsons[] =[
             "add-field" => [
                 "name" =>"oxcategories__oxid",
@@ -195,7 +195,7 @@ class solr_import
                 "stored" => true,
                 "multiValued" => true,
                 "indexed" => true
-                ]
+            ]
         ];
         $aJsons[] =[
             "add-field" => [
@@ -204,8 +204,8 @@ class solr_import
                 "stored" => true,
                 "multiValued" => false,
                 "indexed" => true
-                ]
-        ];     
+            ]
+        ];
         $aJsons[] =[
             "add-field" => [
                 "name" =>"oxmanufacturers__oxid",
@@ -213,7 +213,7 @@ class solr_import
                 "stored" => true,
                 "multiValued" => false,
                 "indexed" => true
-                ]
+            ]
         ];
         $aJsons[] =[
             "add-field" => [
@@ -222,9 +222,9 @@ class solr_import
                 "stored" => true,
                 "multiValued" => false,
                 "indexed" => true
-                ]
+            ]
         ];
-        
+
 
         $a = array_keys($this->getAttributesIds());
         foreach($a as $key)
@@ -236,11 +236,11 @@ class solr_import
                     "stored" => true,
                     "multiValued" => true,
                     "indexed" => true
-                    ]
+                ]
             ];
-        
+
         }
-        
+
         foreach($aJsons as $aJson)
         {
             $sJson = json_encode($aJson);
@@ -250,29 +250,40 @@ class solr_import
         }
     }
 
-    
+
     public function deleteAll()
     {
         \rs\solr\Core\solr_connector::deleteAll();
     }
-    
+
     //protected $aSolrColumnType=[];
+    protected $_tmp_convertValue=[];
     protected function _convertValue(string $table, string $column, $value, ?string $columnType=null)
     {
         $helper = $this->getSolrHelper();
-        
+
         if($columnType==null && $table!="" && $column!="")
         {
-            $oConfig = $this->getConfig();
-            $oDb = $this->getDb();
-            $sSql="SELECT 
-            DATA_TYPE
-            FROM INFORMATION_SCHEMA.COLUMNS 
-            WHERE table_name = '$table'
-            AND COLUMN_NAME = '$column' 
-            and TABLE_SCHEMA='{$oConfig->getShopConfVar('dbName')}'";
-            $columnType = strtolower($oDb->getOne($sSql));
-            
+            if(isset($this->_tmp_convertValue[$table."__".$column]))
+            {
+                $columnType=$this->_tmp_convertValue[$table."__".$column];
+            }
+            else
+            {
+                $oConfig = $this->getConfig();
+                $oDb = $this->getDb();
+                $sSql="SELECT 
+                DATA_TYPE
+                FROM INFORMATION_SCHEMA.COLUMNS 
+                WHERE table_name = '$table'
+                AND COLUMN_NAME = '$column' 
+                and TABLE_SCHEMA='{$oConfig->getShopConfVar('dbName')}'";
+                $columnType = strtolower($oDb->getOne($sSql));
+
+                $this->_tmp_convertValue[$table."__".$column]=$columnType;
+            }
+
+
 
             /*
             if($columnType==="tinyint")
@@ -291,14 +302,14 @@ class solr_import
             {
                 $this->aSolrColumnType[$table."__".$column]="pfloat";
             }
-            else 
+            else
             {
                 $this->aSolrColumnType[$table."__".$column]="text_general";
             }
              */
         }
 
-        
+
         if($value===null)
         {
             $value=null;
@@ -319,7 +330,7 @@ class solr_import
             }
             else
             {
-                $value = $helper->formatDate($value);  
+                $value = $helper->formatDate($value);
             }
         }
         elseif($columnType==="date")
@@ -330,12 +341,12 @@ class solr_import
             }
             else
             {
-                $value = $helper->formatDate($value." 00:00:00"); 
+                $value = $helper->formatDate($value." 00:00:00");
             }
         }
         elseif($columnType==="double" || $columnType==="float")
         {
-            if($value===null) 
+            if($value===null)
                 $value=0;
             $value = (float) $value;
         }
@@ -348,15 +359,15 @@ class solr_import
         {
             $value = $helper->escapeTerm($value??"");
         }
-        
+
         return $value;
     }
-    
+
     protected function getArticleSql()
     {
         $bStockCheck = true;
         $bVariants = true;
-        
+
         /** @var \OxidEsales\Eshop\Application\Model\Article $oArt */
         $oArt=oxNew('oxArticle');
         $sView=getViewName("oxarticles");
@@ -368,12 +379,12 @@ class solr_import
         if(!$bVariants)
         {
             $where.=" and $sView.oxparentid='' ";
-        } 
+        }
         $where=" (".$where.") ";
         $sSql="select oxid from $sView where ".$where;
         return $sSql;
     }
-    
+
     public function getAttributesIds()
     {
         //attributes
@@ -397,20 +408,20 @@ class solr_import
                 $a[$key]=$aRowData['oxtitle'];
             }
         }
-        
+
         return $a;
     }
-    
+
     public function getAllAttributesIds()
     {
-       $a = [
-           'oxmanufacturers__oxid' => 'Hersteller',
-           'oxcategories__oxid' => 'Kategorie',
-           'oxarticles__oxprice' => 'Preis',
-           'oxarticles__oxvarselect' => 'Variants'
-       ];
+        $a = [
+            'oxmanufacturers__oxid' => 'Hersteller',
+            'oxcategories__oxid' => 'Kategorie',
+            'oxarticles__oxprice' => 'Preis',
+            'oxarticles__oxvarselect' => 'Variants'
+        ];
 
-       return array_merge($a, $this->getAttributesIds());
+        return array_merge($a, $this->getAttributesIds());
     }
 
     public function import(int $iStart=0, int $iOffset=10)
@@ -420,27 +431,27 @@ class solr_import
         {
             $this->deleteAll();
         }
-        
+
         $sSql=$this->getArticleSql()." limit ".$iStart.",".$iOffset;
         if($aRows = $this->getDb()->getAll($sSql))
         {
             $aDocuments=[];
-            
+
             foreach($aRows as $aRow)
             {
                 $aRow = array_change_key_case($aRow);
                 $sArticleOxid = $aRow['oxid'];
-                
+
                 $aDocuments[] = $this->generateArticle($sArticleOxid);
                 $bContinue=true;
             }
-            
+
             //add documents and commit
             $update = $this->getSolrUpdate();
             //$update->setSolrColumnTypes($this->aSolrColumnType);
             $update->addDocuments($aDocuments);
             $update->addCommit();
-            
+
             //$xml = $update->getRequestBuilder()->build($update)->getRawData();
             //echo '<pre>'.htmlentities($xml);
             //die("");
@@ -449,7 +460,7 @@ class solr_import
 
         return $bContinue;
     }
-    
+
     protected function generateArticle($sArticleOxid)
     {
         $oData = $this->getSolrUpdate()->createDocument();
@@ -460,7 +471,7 @@ class solr_import
         $this->generateAttributes($oData, $sArticleOxid);
         return $oData;
     }
-    
+
     protected function generateDataArticle(&$oData, string $sArticleOxid)
     {
         //article
@@ -484,7 +495,7 @@ class solr_import
                 . "left join ".getViewName($sTable)." $sTable_parent on $sTable_parent.oxid=$sTable.oxparentid "
                 . "where $sTable.oxid=?";
         */
-        
+
         $sSql="select 
         $sTable_parent.oxid,
         if($sTable_parent.oxid is null,$sTable.oxid,$sTable.oxparentid) as oxparentid, 
@@ -508,15 +519,15 @@ class solr_import
             {
                 $value = explode("|",$value);
                 $value = array_map("trim", $value);
-                
+
                 $tmp = [];
                 foreach($value as $v)
                 {
                     $tmp[] = $this->_convertValue($sTable, $key, $v, "string");
-                } 
+                }
                 $value = $tmp;
             }
-            else 
+            else
             {
                 $value = $this->_convertValue($sTable, $key, $value);
             }
@@ -546,8 +557,8 @@ class solr_import
         $key = $sTable."__oxtitle";
         $oData->$key = $value;
 
-        
-        
+
+
         $sSql="select oxid from ".getViewName($sTable)." $sTable 
         where oxid in (
             select 
@@ -559,13 +570,13 @@ class solr_import
             ) order by oxtime asc
         )";
         $values = array_change_key_case($this->getDb()->getCol($sSql,[$sArticleOxid]));
-        
+
         $tmp = [];
         foreach($values as $value)
         {
             $tmp[] = $this->_convertValue($sTable, "oxid", $value);
         }
-        
+
         $key = $sTable."__oxid";
         $oData->$key = $tmp;
     }
@@ -588,6 +599,8 @@ class solr_import
     }
     protected function generateAttributes(&$oData, string $sArticleOxid)
     {
+        $sep = trim($this->getConfig()->getConfigParam('rs-solr_attribute_seperator'));
+
         //attributes
         $sTable = "oxattribute";
         $sSql="select 
@@ -605,12 +618,20 @@ class solr_import
             foreach($aRowsData as $aRowData)
             {
                 $aRowData = array_change_key_case($aRowData);
-
-                $values = array_map('trim',explode(",",($aRowData['oxvalue']??"")));
                 $tmp = [];
-                foreach($values as $v)
+
+                if($sep!="")
                 {
-                    $tmp[] = $this->_convertValue("", "", $v, "string");
+                    $values = array_map('trim',explode($sep,($aRowData['oxvalue']??"")));
+
+                    foreach($values as $v)
+                    {
+                        $tmp[] = $this->_convertValue("", "", $v, "string");
+                    }
+                }
+                else
+                {
+                    $tmp[] = $this->_convertValue("", "", $aRowData['oxvalue'], "string");
                 }
 
                 $key = $sTable."__".$aRowData['oxid'];
