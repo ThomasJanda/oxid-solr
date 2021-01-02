@@ -526,6 +526,7 @@ class solr_import
     }
     protected function generateDataCategory(&$oData, string $sArticleOxid)
     {
+
         //main categorie
         $sTable = "oxcategories";
         $sSql="select oxtitle from ".getViewName($sTable)." $sTable 
@@ -537,8 +538,9 @@ class solr_import
                 select if(oxparentid is null or oxparentid='',oxid,oxparentid) 
                 from ".getViewName('oxarticles')." oxarticles where oxid=?
             ) order by oxtime asc
+            limit 0,1
         )";
-        $value = array_change_key_case($this->getDb()->getOne($sSql,[$sArticleOxid]));
+        $value = $this->getDb()->getOne($sSql,[$sArticleOxid]);
         //only the first i need the title
         $value = $this->_convertValue($sTable, "oxtitle", $value);
         $key = $sTable."__oxtitle";
@@ -547,7 +549,7 @@ class solr_import
         
         
         $sSql="select oxid from ".getViewName($sTable)." $sTable 
-        where oxid = (
+        where oxid in (
             select 
             oxobject2category.oxcatnid 
             from oxobject2category 
@@ -617,4 +619,3 @@ class solr_import
         }
     }
 }
-
