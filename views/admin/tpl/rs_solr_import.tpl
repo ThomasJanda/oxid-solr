@@ -25,12 +25,16 @@
     [{$oViewConf->getHiddenSid()}]
     <input type="hidden" name="cl" value="[{$oViewConf->getActiveClassName()}]">
     <input type="hidden" name="fnc" value="import">
+    <input type="hidden" name="importoxid" value="[{$importOxid}]">
+    [{if $startDatetime}]Start: [{$startDatetime}]<br>[{/if}]
+    [{if $endDatetime}]End: [{$endDatetime}]<br>[{/if}]
     [{if $continue}]
         Offset: [{$offset}]<br>
+        <input type="hidden" name="startdatetime" value="[{$startDatetime}]">
         <input type="hidden" name="type" value="[{$type}]">
         <input type="hidden" name="offset" value="[{$offset}]">
      [{else}]
-        <button type="submit">Import</button>
+        <button type="submit">Full import</button>
     [{/if}]
 </form>
 [{if $continue}]

@@ -6,6 +6,7 @@ solrSuggest = {
 
     text_category:"", 
     text_manufacturer:"",
+    text_category_main:"",
 
     source:null,
     searchField: null,
@@ -13,10 +14,11 @@ solrSuggest = {
     searchResultController: null,
     searchResultTimer: null,
 
-    init: function(source, text_category, text_manufacturer) {
+    init: function(source, text_category, text_manufacturer, text_category_main) {
         this.source = source;
         this.text_category = text_category;
         this.text_manufacturer = text_manufacturer;
+        this.text_category_main = text_category_main;
         
         this.searchField = document.getElementById(this.searchFieldId);
         this.searchField.setAttribute("autocomplete","off");
@@ -100,9 +102,13 @@ solrSuggest = {
         else
         {
             let title = this.text_category;
-            if(data.type=="oxmanufactuer")
+            if(data.type==="oxmanufactuer")
             {
                 title = this.text_manufacturer;
+            }
+            else if(data.type==="oxcategory_main")
+            {
+                title = this.text_category_main
             }
             
             line = "<div class='suggest-group clearfix'><div>" + title + "</div>";
@@ -146,4 +152,4 @@ solrSuggest = {
     }
 };
 
-solrSuggest.init(source, text_category, text_manufacturer);
+solrSuggest.init(source, text_category, text_manufacturer, text_category_main);

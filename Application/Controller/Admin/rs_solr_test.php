@@ -137,6 +137,7 @@ class rs_solr_test extends \OxidEsales\Eshop\Application\Controller\Admin\AdminC
         $this->_aViewData['resultQuery']=$sQuery;
         $this->_aViewData['result']=$aResult;
         $this->addTplParam("found", $iFound);
+        $this->addTplParam("error", $sError);
         $this->addTplParam('pages', $iPages);
         $this->addTplParam('phrase', $sPhrase);
         $this->addTplParam('filter', $aFilter);

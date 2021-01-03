@@ -109,6 +109,15 @@ class solr_import
         ];
         $aJsons[] =[
             "add-field" => [
+                "name" =>"oxarticles__oxissearch",
+                "type" => "boolean",
+                "stored" => true,
+                "multiValued" => false,
+                "indexed" => true
+            ]
+        ];
+        $aJsons[] =[
+            "add-field" => [
                 "name" =>"oxarticles__oxtitle",
                 "type" => "text_general",
                 "stored" => true,
@@ -191,6 +200,15 @@ class solr_import
         $aJsons[] =[
             "add-field" => [
                 "name" =>"oxcategories__oxid",
+                "type" => "string",
+                "stored" => true,
+                "multiValued" => true,
+                "indexed" => true
+            ]
+        ];
+        $aJsons[] =[
+            "add-field" => [
+                "name" =>"oxcategories_main__oxid",
                 "type" => "string",
                 "stored" => true,
                 "multiValued" => true,
@@ -380,7 +398,7 @@ class solr_import
         {
             $where.=" and $sView.oxparentid='' ";
         }
-        $where=" (".$where.") ";
+        $where=" (".$where.") and $sView.oxid<>'' ";
         $sSql="select oxid from $sView where ".$where;
         return $sSql;
     }
@@ -414,11 +432,13 @@ class solr_import
 
     public function getAllAttributesIds()
     {
+        $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
         $a = [
-            'oxmanufacturers__oxid' => 'Hersteller',
-            'oxcategories__oxid' => 'Kategorie',
-            'oxarticles__oxprice' => 'Preis',
-            'oxarticles__oxvarselect' => 'Variants'
+            'oxmanufacturers__oxid' => $oLang->translateString('rs_solr_facete_header_manufacturer'),
+            'oxcategories__oxid' => $oLang->translateString('rs_solr_facete_header_categorie'),
+            'oxcategories_main__oxid' => $oLang->translateString('rs_solr_facete_header_categorie_main'),
+            'oxarticles__oxprice' => $oLang->translateString('rs_solr_facete_header_price'),
+            'oxarticles__oxvarselect' => $oLang->translateString('rs_solr_facete_header_variants'),
         ];
 
         return array_merge($a, $this->getAttributesIds());
@@ -479,29 +499,14 @@ class solr_import
         $sView=$oArt->getViewName();
         $sTable = "oxarticles";
         $sTable_parent = "oxarticles_parent";
-        /*
-        $sSql="select "
-                . "if($sTable.oxparentid is null or $sTable.oxparentid='',$sTable.oxid,$sTable.oxparentid) as oxparentid, "
-                . "if($sTable.oxparentid is null or $sTable.oxparentid='',1,0) as oxisparent, "
-                . "$sTable.oxtitle, "
-                . "$sTable.oxartnum, "
-                . "$sTable.oxean, "
-                . "$sTable.oxprice, "
-                . "$sTable.oxprice as oxprice_sort, "
-                . "$sTable.oxsearchkeys, "
-                . "$sTable.oxshortdesc, "
-                . "$sTable.oxvarselect "
-                . "from ".getViewName($sTable)." ".$sTable ." "
-                . "left join ".getViewName($sTable)." $sTable_parent on $sTable_parent.oxid=$sTable.oxparentid "
-                . "where $sTable.oxid=?";
-        */
 
         $sSql="select 
-        $sTable_parent.oxid,
+        if($sTable_parent.oxid is null,$sTable.oxid,$sTable_parent.oxid) as oxid,
         if($sTable_parent.oxid is null,$sTable.oxid,$sTable.oxparentid) as oxparentid, 
         if($sTable_parent.oxid is null,1,0) as oxisparent, 
         if($sTable_parent.oxid is null,$sTable.oxtitle,trim(concat($sTable_parent.oxtitle,' ',$sTable.oxtitle))) as oxtitle, 
         if($sTable_parent.oxid is null,$sTable.oxtitle,trim(concat($sTable_parent.oxtitle,' ',$sTable.oxtitle))) as oxtitle_sort, 
+        if($sTable_parent.oxid is null,$sTable.oxissearch,$sTable_parent.oxissearch) as oxissearch, 
         $sTable.oxartnum, 
         $sTable.oxean, 
         $sTable.oxprice, 
@@ -510,7 +515,7 @@ class solr_import
         $sTable.oxshortdesc, 
         $sTable.oxvarselect 
         from ".getViewName($sTable)." $sTable 
-        left join ".getViewName($sTable)." $sTable_parent on $sTable_parent.oxid=$sTable.oxparentid
+        left join ".getViewName($sTable)." $sTable_parent on $sTable_parent.oxid=$sTable.oxparentid and oxarticles_parent.oxid<>''
         where $sTable.oxid=?";
         $aRowData = array_change_key_case($this->getDb()->getRow($sSql,[$sArticleOxid]));
         foreach($aRowData as $key=>$value)
@@ -558,7 +563,6 @@ class solr_import
         $oData->$key = $value;
 
 
-
         $sSql="select oxid from ".getViewName($sTable)." $sTable 
         where oxid in (
             select 
@@ -578,6 +582,27 @@ class solr_import
         }
 
         $key = $sTable."__oxid";
+        $oData->$key = $tmp;
+
+        $sSql="select oxrootid from ".getViewName($sTable)." $sTable 
+        where oxid in (
+            select 
+            oxobject2category.oxcatnid 
+            from oxobject2category 
+            where oxobject2category.oxobjectid=(
+                select if(oxparentid is null or oxparentid='',oxid,oxparentid) 
+                from ".getViewName('oxarticles')." oxarticles where oxid=?
+            ) order by oxtime asc
+        ) group by oxrootid";
+        $values = array_change_key_case($this->getDb()->getCol($sSql,[$sArticleOxid]));
+
+        $tmp = [];
+        foreach($values as $value)
+        {
+            $tmp[] = $this->_convertValue($sTable, "oxrootid", $value);
+        }
+
+        $key = $sTable."_main__oxid";
         $oData->$key = $tmp;
     }
     protected function generateManufacturer(&$oData, string $sArticleOxid)

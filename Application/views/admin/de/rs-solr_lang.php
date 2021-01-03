@@ -16,20 +16,30 @@ $aLang = array(
     'SHOP_MODULE_rs-solr_server_port' => 'Port',
     'SHOP_MODULE_rs-solr_server_path' => 'Path',
     'SHOP_MODULE_rs-solr_server_core' => 'Core',
-    
+
     'SHOP_MODULE_GROUP_rs-solr_suggest' => 'Vorschlagsliste',
     'SHOP_MODULE_rs-solr_suggest_display_categories' => 'Zeige Kategorien',
+    'SHOP_MODULE_rs-solr_suggest_display_categories_main' => 'Zeige Hauptkategorien',
     'SHOP_MODULE_rs-solr_suggest_display_manufacturers' => 'Zeige Hersteller',
-    
+    'SHOP_MODULE_rs-solr_suggest_count_articles' => 'Maximale Anzahl Artikel',
+    'SHOP_MODULE_rs-solr_suggest_count_other' => 'Maximale Anzahl Kategorien/Hauptkategorien/Hersteller',
+
     'SHOP_MODULE_GROUP_rs-solr_search' => 'Suchergebnis Seite',
     'SHOP_MODULE_rs-solr_search_display_categories' => 'Zeige Kategorien',
+    'SHOP_MODULE_rs-solr_search_display_categories_main' => 'Zeige Hauptkategorien',
     'SHOP_MODULE_rs-solr_search_display_manufacturers' => 'Zeige Hersteller',
     'SHOP_MODULE_rs-solr_search_display_price' => 'Zeige Preis Slider',
-    
+
     'SHOP_MODULE_GROUP_rs-solr_attribute' => "Artikel Attribute",
     'SHOP_MODULE_rs-solr_attribute_seperator' => "Wenn mehrer Werte in einem Attribute vorhanden sind, sind diese getrennt durch",
-    
+
     'SHOP_MODULE_GROUP_rs-solr_import' => "Import",
     'SHOP_MODULE_rs-solr_import_offset' => "Anzahl Artikel die beim Import bei einem Durchlauf gleichzeitig zum Solr Server gesendet werden",
+
+    'rs_solr_facete_header_categorie' => 'Kategorien',
+    'rs_solr_facete_header_categorie_main' => 'Hauptkategorien',
+    'rs_solr_facete_header_manufacturer' => 'Hersteller',
+    'rs_solr_facete_header_price' => 'Preis',
+    'rs_solr_facete_header_variants' => 'Varianten',
 
 );

@@ -31,13 +31,13 @@ $aModule = array(
         'rs/solr/views/tpl/page/search/search__search_results.tpl' => 'rs/solr/views/tpl/page/search/search__search_results.tpl',
         'rs/solr/views/tpl/layout/page__layout_header.tpl' => 'rs/solr/views/tpl/layout/page__layout_header.tpl',
         'rs/solr/views/tpl/widget/locator/attributes__widget_locator_attributes.tpl' => 'rs/solr/views/tpl/widget/locator/attributes__widget_locator_attributes.tpl',
-        
+
         'rs/solr/views/tpl/widget/locator/attributes/checkbox_list.tpl' => 'rs/solr/views/tpl/widget/locator/attributes/checkbox_list.tpl',
         'rs/solr/views/tpl/widget/locator/attributes/range_slider.tpl' => 'rs/solr/views/tpl/widget/locator/attributes/range_slider.tpl',
         'rs/solr/views/tpl/widget/locator/attributes/range_slider_currency.tpl' => 'rs/solr/views/tpl/widget/locator/attributes/range_slider_currency.tpl',
         'rs/solr/views/tpl/widget/locator/attributes/range_slider_numeric.tpl' => 'rs/solr/views/tpl/widget/locator/attributes/range_slider_numeric.tpl',
         'rs/solr/views/tpl/widget/locator/attributes/selectbox.tpl' => 'rs/solr/views/tpl/widget/locator/attributes/selectbox.tpl',
-        
+
     ),
     'blocks'      => array(
         array(
@@ -56,8 +56,8 @@ $aModule = array(
             'file'     => '/views/blocks/widget/locator/attributes__widget_locator_attributes.tpl',
         ),
         array(
-            'template' => 'layout/page.tpl', 
-            'block' => 'layout_header', 
+            'template' => 'layout/page.tpl',
+            'block' => 'layout_header',
             'file' => '/views/blocks/layout/page__layout_header.tpl'
         )
     ),
@@ -86,52 +86,76 @@ $aModule = array(
             'type'  => 'str',
             'value' => 'oxid',
         ),
-        
+
 
         array(
             'group' => 'rs-solr_suggest',
             'name'  => 'rs-solr_suggest_display_categories',
             'type'  => 'bool',
             'value' => true,
-        ),    
+        ),
+        array(
+            'group' => 'rs-solr_suggest',
+            'name'  => 'rs-solr_suggest_display_categories_main',
+            'type'  => 'bool',
+            'value' => true,
+        ),
         array(
             'group' => 'rs-solr_suggest',
             'name'  => 'rs-solr_suggest_display_manufacturers',
             'type'  => 'bool',
             'value' => false,
-        ),  
-        
+        ),
+        array(
+            'group' => 'rs-solr_suggest',
+            'name'  => 'rs-solr_suggest_count_articles',
+            'type'  => 'str',
+            'value' => 5,
+        ),
+        array(
+            'group' => 'rs-solr_suggest',
+            'name'  => 'rs-solr_suggest_count_other',
+            'type'  => 'str',
+            'value' => 5,
+        ),
+
         array(
             'group' => 'rs-solr_search',
             'name'  => 'rs-solr_search_display_categories',
             'type'  => 'bool',
             'value' => true,
-        ),    
+        ),
+        array(
+            'group' => 'rs-solr_search',
+            'name'  => 'rs-solr_search_display_categories_main',
+            'type'  => 'bool',
+            'value' => true,
+        ),
         array(
             'group' => 'rs-solr_search',
             'name'  => 'rs-solr_search_display_price',
             'type'  => 'bool',
             'value' => true,
-        ),   
+        ),
         array(
             'group' => 'rs-solr_search',
             'name'  => 'rs-solr_search_display_manufacturers',
             'type'  => 'bool',
             'value' => true,
-        ), 
-        
+        ),
+
         array(
             'group' => 'rs-solr_attribute',
             'name'  => 'rs-solr_attribute_seperator',
             'type'  => 'str',
             'value' => "|",
-        ),    
-        
+        ),
+
         array(
             'group' => 'rs-solr_import',
             'name'  => 'rs-solr_import_offset',
             'type'  => 'str',
             'value' => "50",
-        ), 
+        ),
     ),
 );

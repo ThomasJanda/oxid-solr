@@ -4,7 +4,8 @@ namespace rs\solr\Core;
 
 class solr_select 
 {
-    
+    protected $oConfig = null;
+
     /**
      * @return \OxidEsales\Eshop\Core\Config
      */
@@ -70,6 +71,7 @@ class solr_select
         $sQuery=null;
         if(trim($sPhrase)!=="")
         {
+            $sPhraseOriginal = $sPhrase;
             //remove special characters
             $special_characters = ['(',')','/',"\\",'&','!','.','-','+'];
             $sPhrase = str_replace($special_characters,' ',$sPhrase);
@@ -85,6 +87,12 @@ class solr_select
                     $sPhrase = trim($this->oSolrHelper->escapePhrase($sPhrase),'"');
 
                     $aQuery[] = $sColumn.":(".$sPhrase."~)^".$fPrio;
+                    $aQuery[] = $sColumn.":(*".$sPhrase."*)^".$fPrio;
+                }
+
+                if($sColumn=="oxarticles__oxartnum" || $sColumn=="oxarticles__oxean")
+                {
+                    $aQuery[] = $sColumn.":(\"".trim($this->oSolrHelper->escapePhrase($sPhraseOriginal),'"')."\")^".$fPrio;
                 }
             }
             $sQuery = implode(" or ", $aQuery);
@@ -117,6 +125,7 @@ class solr_select
             }
         }
     }
+
     public function setSearchFilterFixed($sPrefixKey, $sPrefixValue)
     {
         if($sPrefixKey!==null && $sPrefixValue!==null)
@@ -194,9 +203,21 @@ class solr_select
             }
         }
     }
+
+    protected function _preExecute()
+    {
+        if($this->sCachePrefix===null)
+        {
+            $sQuery='oxarticles__oxissearch:true';
+            $this->oSolrQuery->createFilterQuery("prefix")->setQuery($sQuery);
+        }
+    }
     
     public function execute()
     {
+        $this->_preExecute();
+
+
         $aFacets = null;
         $aResult = null;
         $sQuery = urldecode($this->oSolrQuery->getRequestBuilder()->build($this->oSolrQuery)->getQueryString());
@@ -209,27 +230,17 @@ class solr_select
         {
             //execute search
             $oResult = $this->oSolrClient->select($this->oSolrQuery);
-           
+
             $oGroup = $oResult->getGrouping()->getGroup("oxarticles__oxparentid");
             $iFound = $oGroup->getNumberOfGroups();
 
             /** @var \Solarium\Component\Result\Grouping\ValueGroup $oGroupValue */
             foreach($oGroup->getValueGroups() as $oGroupValue)
             {
-                $aResult[]=trim($oGroupValue->getValue());
+                $v = trim($oGroupValue->getValue());
+                if($v!=="")
+                    $aResult[]=$v;
             }
-            
-            /*
-            die("");
-            //get found documents
-            $iFound = $oResult->getNumFound();
-
-            //extract ids
-            foreach($oResult as $oDoc)
-            {
-                $aResult[]=trim($oDoc->oxarticles__oxparentid);
-            }
-            */
 
             //extract facets
             $aFacetsTmp = $oResult->getFacetSet()->getFacets();
@@ -336,7 +347,8 @@ class solr_select
                 {
                     foreach($this->aCacheFacets as $name)
                     {
-                        $tmp[$name]=$aFacets[$name];                
+                        if(isset($aFacets[$name]))
+                            $tmp[$name]=$aFacets[$name];
                     }
                 } 
                 $aFacets=$tmp;
@@ -375,6 +387,8 @@ class solr_select
     {
         //select title as value which has to sort for
         $list = null;
+        if($name==="oxcategories_main__oxid") $name="oxcategories__oxid";
+
         if($name==="oxmanufacturers__oxid" || $name==="oxcategories__oxid")
         {
             $keys = implode(',', \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray(array_keys($data)));

@@ -2,7 +2,7 @@
 
 namespace rs\solr\Application\Controller;
 
-include '../../../../../widget.php';
+include '../../../../../bootstrap.php';
 $autosuggest = oxNew(AutoSuggestController::class);
 $autosuggest->search();
 
@@ -24,7 +24,11 @@ class AutoSuggestController
         $aResult  = [];
 
         if ($oArtList != null) {
-            
+
+            $iMax = (int) $oConfig->getConfigParam('rs-solr_suggest_count_articles');
+            if($iMax <= 0) $iMax=10;
+
+            $x=0;
             foreach ($oArtList as $oArticle) {
                 $aResult[] = [
                     'type'   => 'oxarticles',
@@ -35,8 +39,13 @@ class AutoSuggestController
                     'link'   => $oArticle->getMainLink() . '?searchparam=' . $term,
                     'image'  => $oArticle->getThumbnailUrl()
                 ];
+                $x++;
+                if($x>=$iMax) break;
             }
-            
+
+
+            $iMax = (int) $oConfig->getConfigParam('rs-solr_suggest_count_other');
+            if($iMax <= 0) $iMax=5;
             
             //max 5 categories/manufacturers
             $aFacets = $oArtList->getSolrFacets();
@@ -52,7 +61,7 @@ class AutoSuggestController
 
                 $x=0;
                 $tmp=[];
-                /** @var \OxidEsales\Eshop\Application\Model\Manufacturer $o **/
+                /** @var \OxidEsales\Eshop\Application\Model\Category $o **/
                 $o = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
                 foreach($aList as $oxid => $count)
                 {
@@ -66,13 +75,50 @@ class AutoSuggestController
                         ];
                 
                         $x++;
-                        if($x>=5) break;
+                        if($x>=$iMax) break;
                     }
                 }
                 if(count($tmp)>0)
                 {
                     $aResult[] = [
                         'type'  => 'oxcategory',
+                        'items' => $tmp
+                    ];
+                }
+            }
+
+            if($oConfig->getConfigParam('rs-solr_suggest_display_categories_main') && isset($aFacets['oxcategories_main__oxid']))
+            {
+                $aList = [];
+                foreach($aFacets['oxcategories_main__oxid'] as $oxid => $data)
+                {
+                    $aList[$oxid] = $data['count'];
+                }
+                arsort($aList, SORT_NUMERIC);
+
+                $x=0;
+                $tmp=[];
+                /** @var \OxidEsales\Eshop\Application\Model\Category $o **/
+                $o = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
+                foreach($aList as $oxid => $count)
+                {
+                    if($o->load($oxid))
+                    {
+                        $tmp[] = [
+                            'oxid'  => $o->getId(),
+                            'title' => $o->getTitle(),
+                            'link'  => $o->getLink() . '?searchparam=' . $term,
+                            'image' => $o->getIconUrl()
+                        ];
+
+                        $x++;
+                        if($x>=$iMax) break;
+                    }
+                }
+                if(count($tmp)>0)
+                {
+                    $aResult[] = [
+                        'type'  => 'oxcategory_main',
                         'items' => $tmp
                     ];
                 }
@@ -103,7 +149,7 @@ class AutoSuggestController
                         ];
                 
                         $x++;
-                        if($x>=5) break;
+                        if($x>=$iMax) break;
                     }
                 }
                 if(count($tmp)>0)

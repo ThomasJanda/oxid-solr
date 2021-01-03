@@ -56,7 +56,7 @@ class ArticleList extends ArticleList_parent
     
     public function loadIdsAndSort($aIds)
     {
-        if (!count($aIds)) {
+        if (!is_array($aIds) || !count($aIds)) {
             $this->clear();
 
             return;

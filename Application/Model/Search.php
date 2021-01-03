@@ -28,6 +28,9 @@ class Search extends Search_parent
         
         if($this->getConfig()->getConfigParam('rs-solr_search_display_categories'))
             $aFilterSettingsType['oxcategories__oxid'] = 'checkbox_list';
+
+        if($this->getConfig()->getConfigParam('rs-solr_search_display_categories_main'))
+            $aFilterSettingsType['oxcategories_main__oxid'] = 'checkbox_list';
         
         if($this->getConfig()->getConfigParam('rs-solr_search_display_manufacturers'))
             $aFilterSettingsType['oxmanufacturers__oxid'] = 'checkbox_list';
@@ -63,7 +66,8 @@ class Search extends Search_parent
         
         $aFilterSettings=[
             'oxmanufacturers__oxid',
-            'oxcategories__oxid'
+            'oxcategories__oxid',
+            'oxcategories_main__oxid'
         ];
         
         $oSolrSearch = \rs\solr\Core\solr_connector::getSearch();

@@ -189,7 +189,7 @@
                 "classname": "selectbox_db",
                 "property": {
                     "multiselect": "0",
-                    "standardsqlstring": "(\n    select 'oxcategory__oxid' as oxid, 'Category' as oxtitle\n) union (\n    select 'oxarticles__oxprice' as oxid, 'Price' as oxtitle\n) union (\n    select 'oxarticles__oxvarselect' as oxid, 'Variants' as oxtitle\n) union (\n    select concat('oxattribute__',oxattribute.oxid) as oxid, concat('Attribute: ',oxattribute.oxtitle) as oxtitle\n    from oxattribute join oxobject2attribute on oxattribute.oxid=oxobject2attribute.oxattrid\n    where oxobject2attribute.oxobjectid in ( select oxarticles.oxid from oxarticles where oxarticles.OXMANUFACTURERID='#INDEX2#' )\n    group by oxattribute.oxid order by oxattribute.oxpos\n)",
+                    "standardsqlstring": "(\n  select 'oxcategory_main__oxid' as oxid, 'Main category' as oxtitle\n) union (\n    select 'oxcategory__oxid' as oxid, 'Category' as oxtitle\n) union (\n    select 'oxarticles__oxprice' as oxid, 'Price' as oxtitle\n) union (\n    select 'oxarticles__oxvarselect' as oxid, 'Variants' as oxtitle\n) union (\n    select concat('oxattribute__',oxattribute.oxid) as oxid, concat('Attribute: ',oxattribute.oxtitle) as oxtitle\n    from oxattribute join oxobject2attribute on oxattribute.oxid=oxobject2attribute.oxattrid\n    where oxobject2attribute.oxobjectid in ( select oxarticles.oxid from oxarticles where oxarticles.OXMANUFACTURERID='#INDEX2#' )\n    group by oxattribute.oxid order by oxattribute.oxpos\n)",
                     "pflichtfeld": "1",
                     "fehlermeldung": "Facete is required",
                     "readonly": "0",

@@ -22,18 +22,16 @@ This extension was created for Oxid 6.2, Wave theme.
 
 1. Install solr server on your web space. Contact your hosting provider how you have to do this and how you can configure/get access to it.
 
-        Example for hoster "ProfiHost" you can find a "howto" here https://wissen.profihost.com/wissen/artikel/wie-kann-ich-apache-solr-installieren/
-
 2. Create core within the solr server (in this case, you create a core called "oxid")
 
-        #PATH TO SOLR INSTALLATION FOLDER#/bin/solr create -c oxid
-        #PATH TO SOLR INSTALLATION FOLDER#/bin/solr config -c oxid -p 8983 -action set-user-property -property update.autoCreateFields -value false
+    sudo su - solr -c "/opt/solr/bin/solr create -c oxid"
+    /opt/solr/bin/solr config -c oxid -p 8983 -action set-user-property -property update.autoCreateFields -value false
 
 3. Install module in your shop
 
         composer config repositories.rs/solr git https://github.com/ThomasJanda/oxid-solr/
         composer require rs/solr:dev-master --update-no-dev --ignore-platform-reqs
-        If you get ask, override files, press "n".
+        vendor/bin/oe-console oe:module:install-configuration source/modules/rs/solr
 
 4. Execute following within your DB environment
 
@@ -57,6 +55,13 @@ This extension was created for Oxid 6.2, Wave theme.
          `f_oxmanufacturer` char(32) CHARACTER SET latin1 COLLATE latin1_general_ci DEFAULT NULL,
          PRIMARY KEY (`oxid`),
          KEY `f_oxcategories` (`f_oxmanufacturer`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+        CREATE TABLE `rssolr_import` (
+         `oxid` char(32) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
+         `rsstart` datetime DEFAULT NULL,
+         `rsend` datetime DEFAULT NULL,
+         PRIMARY KEY (`oxid`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 4. Enable module in the oxid admin area, Extensions => Modules. Setup the credentials to the solr server.
