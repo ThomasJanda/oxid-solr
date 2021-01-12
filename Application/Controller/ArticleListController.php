@@ -55,7 +55,10 @@ class ArticleListController extends ArticleListController_parent
         $config = $this->getConfig();
         $numberOfCategoryArticles = (int) $config->getConfigParam('iNrofCatArticles');
         $numberOfCategoryArticles = $numberOfCategoryArticles ? $numberOfCategoryArticles : 1;
-        
+
+        $iPgNr = (int) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('pgnr');
+        $iPgNr = ($iPgNr < 0) ? 0 : $iPgNr;
+
         $aFilter=\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('filter');
         if(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('filterclear')==="1")
             $aFilter = null;
@@ -73,7 +76,7 @@ class ArticleListController extends ArticleListController_parent
 
         $oSolrSearch = \rs\solr\Core\solr_connector::getSearch();
         $oSolrSearch->setSearchFilter($aFilter);
-        $oSolrSearch->setLimit($numberOfCategoryArticles * $this->_getRequestPageNr(), $numberOfCategoryArticles);
+        $oSolrSearch->setLimit($numberOfCategoryArticles * $iPgNr, $numberOfCategoryArticles);
         if($sSort!="")
             $oSolrSearch->setSortString($sSort);
         
@@ -95,7 +98,6 @@ class ArticleListController extends ArticleListController_parent
         $oArtList->setSolrFilter($aFilter);
         $oArtList->setSolrFilterSettings($aFilterSettings);
         $oArtList->setSolrFilterSettingsType($aFilterSettingsType);
-        
         $this->addTplParam("facets", $oArtList->getSolrFacets());
         $this->addTplParam('filter', $oArtList->getSolrFilter());
         $this->addTplParam("hasfilterset", $oArtList->hasSolrFilterSet());
@@ -104,8 +106,22 @@ class ArticleListController extends ArticleListController_parent
         
         return $oArtList;
     }
-    
-    
+
+
+
+    /* bug in oxid */
+    public function getActPage()
+    {
+        if ($this->_iActPage === null) {
+            $tmp = $this->getConfig()->getRequestParameter('pgnr');
+            if($tmp=="")
+                $this->getConfig()->getRequestParameter('pgNr');
+            $this->_iActPage = (int) $tmp;
+            $this->_iActPage = ($this->_iActPage < 0) ? 0 : $this->_iActPage;
+        }
+
+        return $this->_iActPage;
+    }
     
     
     

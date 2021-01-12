@@ -152,10 +152,16 @@ $aModule = array(
         ),
 
         array(
-            'group' => 'rs-solr_import',
+            'group' => 'rs-solr_import_update',
             'name'  => 'rs-solr_import_offset',
             'type'  => 'str',
             'value' => "50",
+        ),
+        array(
+            'group' => 'rs-solr_import_update',
+            'name'  => 'rs-solr_update_offset',
+            'type'  => 'str',
+            'value' => "10",
         ),
     ),
 );

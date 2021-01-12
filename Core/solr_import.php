@@ -447,10 +447,12 @@ class solr_import
     public function import(int $iStart=0, int $iOffset=10)
     {
         $bContinue = false;
+        /*
         if($iStart===0)
         {
             $this->deleteAll();
         }
+        */
 
         $sSql=$this->getArticleSql()." limit ".$iStart.",".$iOffset;
         if($aRows = $this->getDb()->getAll($sSql))
@@ -480,6 +482,66 @@ class solr_import
 
         return $bContinue;
     }
+
+
+    public function update(int $iOffset=10)
+    {
+        $bContinue = false;
+
+        $sSql="select rssolr_update_articles.oxid, if(oxarticles.oxid is null,0,1) as art 
+        from rssolr_update_articles left join oxarticles on oxarticles.oxid=rssolr_update_articles.oxid
+        limit 0,".$iOffset;
+        if($aRows = $this->getDb()->getAll($sSql))
+        {
+            /* delete all */
+            // delete product in solr
+            // get an update query instance
+            $update = $this->getSolrUpdate();
+            foreach($aRows as $aRow) {
+
+                $aRow = array_change_key_case($aRow);
+
+                // add the delete query and a commit command to the update query
+                $update->addDeleteById($aRow['oxid']);
+            }
+            $update->addCommit();
+            $this->getSolrClient()->update($update);
+
+
+            // delete product in table
+            foreach($aRows as $aRow)
+            {
+                $aRow = array_change_key_case($aRow);
+                $sSql="delete from rssolr_update_articles where oxid=?";
+                $this->getDb()->execute($sSql, [$aRow['oxid']]);
+            }
+
+            $aDocuments=[];
+            foreach($aRows as $aRow)
+            {
+                $aRow = array_change_key_case($aRow);
+                if($aRow['art']=="1")
+                {
+                    $aDocuments[] = $this->generateArticle($aRow['oxid']);
+                }
+            }
+
+            if(count($aDocuments)>0)
+            {
+                //add documents and commit
+                $update = $this->getSolrUpdate();
+                $update->addDocuments($aDocuments);
+                $update->addCommit();
+
+                $this->getSolrClient()->update($update);
+            }
+
+            $bContinue=true;
+        }
+
+        return $bContinue;
+    }
+
 
     protected function generateArticle($sArticleOxid)
     {

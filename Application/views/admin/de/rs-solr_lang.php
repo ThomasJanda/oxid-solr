@@ -33,8 +33,9 @@ $aLang = array(
     'SHOP_MODULE_GROUP_rs-solr_attribute' => "Artikel Attribute",
     'SHOP_MODULE_rs-solr_attribute_seperator' => "Wenn mehrer Werte in einem Attribute vorhanden sind, sind diese getrennt durch",
 
-    'SHOP_MODULE_GROUP_rs-solr_import' => "Import",
+    'SHOP_MODULE_GROUP_rs-solr_import_update' => "Import/Update",
     'SHOP_MODULE_rs-solr_import_offset' => "Anzahl Artikel die beim Import bei einem Durchlauf gleichzeitig zum Solr Server gesendet werden",
+    'SHOP_MODULE_rs-solr_update_offset' => "Anzahl Artikel die beim Update bei einem Durchlauf gleichzeitig zum Solr Server gesendet werden",
 
     'rs_solr_facete_header_categorie' => 'Kategorien',
     'rs_solr_facete_header_categorie_main' => 'Hauptkategorien',

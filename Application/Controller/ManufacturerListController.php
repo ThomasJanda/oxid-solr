@@ -103,10 +103,22 @@ class ManufacturerListController extends ManufacturerListController_parent
         
     return [$oArtList, $iFound];
     }
-    
-    
-    
-    
+
+
+
+    /* bug in oxid */
+    public function getActPage()
+    {
+        if ($this->_iActPage === null) {
+            $tmp = $this->getConfig()->getRequestParameter('pgnr');
+            if($tmp=="")
+                $this->getConfig()->getRequestParameter('pgNr');
+            $this->_iActPage = (int) $tmp;
+            $this->_iActPage = ($this->_iActPage < 0) ? 0 : $this->_iActPage;
+        }
+
+        return $this->_iActPage;
+    }
     
 #region "sort"
     public function getSortColumns()
