@@ -20,11 +20,13 @@ $aModule = array(
         \OxidEsales\Eshop\Core\ViewConfig::class => rs\solr\Core\ViewConfig::class,
     ),
     'controllers' => array(
+        'rs_solr_clear_cache' => \rs\solr\Application\Controller\Admin\rs_solr_clear_cache::class,
         'rs_solr_test' => \rs\solr\Application\Controller\Admin\rs_solr_test::class,
         'rs_solr_import' => \rs\solr\Application\Controller\Admin\rs_solr_import::class,
         'rs_solr_autosuggest' => \rs\solr\Application\Controller\AutoSuggestController::class,
     ),
     'templates'   => array(
+        'rs_solr_clear_cache.tpl'   => 'rs/solr/views/admin/tpl/rs_solr_clear_cache.tpl',
         'rs_solr_test.tpl'   => 'rs/solr/views/admin/tpl/rs_solr_test.tpl',
         'rs_solr_import.tpl'   => 'rs/solr/views/admin/tpl/rs_solr_import.tpl',
         'rs/solr/views/tpl/page/search/search__search_header.tpl' => 'rs/solr/views/tpl/page/search/search__search_header.tpl',
@@ -87,6 +89,12 @@ $aModule = array(
             'value' => 'oxid',
         ),
 
+        array(
+            'group' => 'rs-solr_tracking',
+            'name'  => 'rs-solr_tracking_enable',
+            'type'  => 'bool',
+            'value' => true,
+        ),
 
         array(
             'group' => 'rs-solr_suggest',

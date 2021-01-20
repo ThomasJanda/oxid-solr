@@ -22,6 +22,11 @@
         <MAINMENU id="navi_rs_solr">
             <SUBMENU id="navi_rs_solr_test" cl="rs_solr_test" />
             <SUBMENU id="navi_rs_solr_import" cl="rs_solr_import" />
+            <SUBMENU id="navi_rs_solr_clear_cache" cl="rs_solr_clear_cache" />
+            <SUBMENU id="navi_rs_solr_requests"
+                 cl="rs_formedit_fullpage"
+                 clparam="project=rs/solr/formeditprojects/requests.cpf" />
+            />
         </MAINMENU>
     </OXMENU>
 </OX>

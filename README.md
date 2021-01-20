@@ -64,6 +64,26 @@ This extension was created for Oxid 6.2, Wave theme.
          PRIMARY KEY (`oxid`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
         
+        CREATE TABLE `rssolr_import` (
+         `oxid` char(32) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
+         `rsstart` datetime DEFAULT NULL,
+         `rsend` datetime DEFAULT NULL,
+         PRIMARY KEY (`oxid`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+        
+        CREATE TABLE `rssolr_requests` (
+         `oxid` char(32) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
+         `rscreated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+         `rsparam_q` varchar(5000) NOT NULL,
+         `rsparam_fq` varchar(250) NOT NULL,
+         `rsparam_sort` varchar(250) NOT NULL,
+         `rsresult_count` int(11) NOT NULL,
+         `rsresult_error` varchar(1000) NOT NULL,
+         `rscached` int(11) NOT NULL DEFAULT '0',
+         `rsview` varchar(250) NOT NULL,
+         PRIMARY KEY (`oxid`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+        
         CREATE TRIGGER rssolr_update_articles__oxarticles__insert AFTER INSERT ON oxarticles
         FOR EACH ROW replace into rssolr_update_articles (oxid) values (NEW.oxid);
         

@@ -208,9 +208,38 @@ class solr_select
     {
         if($this->sCachePrefix===null)
         {
+            //only use on search page
             $sQuery='oxarticles__oxissearch:true';
             $this->oSolrQuery->createFilterQuery("prefix")->setQuery($sQuery);
         }
+    }
+
+    protected function _trackQueryValue($v)
+    {
+        if(is_array($v))
+        {
+            $v = implode(", ",$v);
+        }
+        return $v;
+    }
+    protected function _trackQuery($aParam)
+    {
+        if(!(bool) $this->getConfig()->getConfigParam('rs-solr_tracking_enable'))
+            return;
+
+        /** @var \rs\solr\Application\Model\rssolr_requests $oRequest */
+        $oRequest = oxNew(\rs\solr\Application\Model\rssolr_requests::class);
+        $oRequest->assign([
+            'rssolr_requests__oxid' => uniqid(""),
+            'rssolr_requests__rsparam_q' => $this->_trackQueryValue($aParam['q']??null),
+            'rssolr_requests__rsparam_fq' => $this->_trackQueryValue($aParam['fq']??null),
+            'rssolr_requests__rsparam_sort' => $this->_trackQueryValue($aParam['sort']??null),
+            'rssolr_requests__rsresult_count' => $this->_trackQueryValue($aParam['resultCount']??0),
+            'rssolr_requests__rsresult_error' => $this->_trackQueryValue($aParam['error']??null),
+            'rssolr_requests__rscached' => $this->_trackQueryValue($aParam['cache']??0),
+            'rssolr_requests__rsview' => $this->_trackQueryValue(get_class($this->getConfig()->getTopActiveView()))
+        ]);
+        $oRequest->save();
     }
     
     public function execute()
@@ -220,12 +249,23 @@ class solr_select
 
         $aFacets = null;
         $aResult = null;
-        $sQuery = urldecode($this->oSolrQuery->getRequestBuilder()->build($this->oSolrQuery)->getQueryString());
-        //die($sQuery);
         $iFound = 0;
         $iPages = 0;
         $sError = null;
-        
+
+        $oSolrBuilder = $this->oSolrQuery->getRequestBuilder()->build($this->oSolrQuery);
+        $sQuery = urldecode($oSolrBuilder->getQueryString());
+
+        //full caching
+        $sPathCacheFull = $this->getCacheDirectory()."/full_".md5($sQuery);
+        if(file_exists($sPathCacheFull))
+        {
+            $aRet = unserialize(file_get_contents($sPathCacheFull));
+            list($iFound,$aResult, $aFacets, $sQuery, $iPages, $sError) = $aRet;
+            $this->_trackQuery(array_merge(['resultCount' => $iFound, 'error' => $sError, 'cache' => 1],$oSolrBuilder->getParams()));
+            return $aRet;
+        }
+
         try 
         {
             //execute search
@@ -365,7 +405,16 @@ class solr_select
             $iFound = 0;
         }
 
-        return array($iFound, $aResult, $aFacets, $sQuery, $iPages, $sError);
+        $this->_trackQuery(array_merge(['resultCount' => $iFound, 'error' => $sError],$oSolrBuilder->getParams()));
+
+        //create full cache
+        $aRet = array($iFound, $aResult, $aFacets, $sQuery, $iPages, $sError);
+        if(!$sError)
+        {
+            file_put_contents($sPathCacheFull, serialize($aRet));
+        }
+
+        return $aRet;
     }
     
     

@@ -33,7 +33,7 @@
                     "kennzeichen1deletesubrowssqlstring": "",
                     "kennzeichen1navigation": "",
                     "kennzeichen1style": "",
-                    "sqlstring": "select\nsql_calc_found_rows\noxid,\nrsfacete as 'Facete',\nrstype as 'Type',\nrscustom as 'Custom template',\nrssort as 'Sort order'\nfrom rssolr_facets_categories\n#WHERE#\n#ORDERBY#\n#LIMIT#",
+                    "sqlstring": "select\nsql_calc_found_rows\noxid,\n\nif(rsfacete='oxmanufacturers__oxid','Manufacturer',\nif(rsfacete='oxarticles__oxprice','Price',\nif(rsfacete='oxarticles__oxvarselect','Variants',\n\n(select concat('Attribute: ',oxattribute.oxtitle) from oxattribute where concat('oxattribute__',oxattribute.oxid)=rsfacete)\n\n)\n)\n)  as 'Facete',\n\nrstype as 'Type',\nrscustom as 'Custom template',\nrssort as 'Sort order'\nfrom rssolr_facets_categories\n#WHERE#\n#ORDERBY#\n#LIMIT#",
                     "sqlstringcount": "select found_rows()",
                     "limitoffset": "",
                     "wherefixed": "f_oxcategories='#INDEX2#'",
