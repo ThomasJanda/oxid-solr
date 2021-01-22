@@ -3,7 +3,7 @@
 ## Description
 
 Implement/replace search, inclusive suggest list, category listing and manufacturer listing 
-trought a solr instance. 
+with a solr instance. 
 
 Used third party projects: 
 
