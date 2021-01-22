@@ -15,17 +15,17 @@ class solr_connector
     {
         return new solr_select();
     }
-    
+
     /**
      * @return \rs\solr\Core\solr_import
-     */    
+     */
     public static function getImport()
     {
         return new solr_import();
     }
-    
-    
-    
+
+
+
     /**
      * return solr connector solarium
      * 
@@ -35,11 +35,10 @@ class solr_connector
     public function getClient()
     {
         global $oSolrClient;
-        
-        if($oSolrClient===null)
-        {
+
+        if ($oSolrClient === null) {
             $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
-            
+
             // create a client instance
             $adapter = new \Solarium\Core\Client\Adapter\Curl(); // or any other adapter implementing AdapterInterface
             $eventDispatcher = new \rs\solr\Core\solarium\solarium_dispatcher();
@@ -55,12 +54,12 @@ class solr_connector
                     )
                 )
             );
-            
+
             $oSolrClient = new \Solarium\Client($adapter, $eventDispatcher, $config);
         }
         return $oSolrClient;
     }
-    
+
     /**
      * return solr connector solarium
      * 
@@ -71,7 +70,7 @@ class solr_connector
         $o = new solr_connector();
         return $o->getClient();
     }
-    
+
     /**
      * ping solr server and return information about status
      * 
@@ -80,24 +79,25 @@ class solr_connector
     public static function ping()
     {
         $oClient = self::getSolrClient();
-        
+
         // create a ping query
         $ping = $oClient->createPing();
 
         // execute the ping query
         try {
             $result = $oClient->ping($ping);
-            if($result->getData()['status']=="OK")
+            if ($result->getData()['status'] == "OK")
                 return true;
-        } catch (Exception $e) {}
+        } catch (\Exception $e) {
+        }
         return false;
     }
 
-    
+
     public static function deleteAll()
     {
         $oSolrClient = self::getSolrClient();
-        
+
         // get an update query instance
         $update = $oSolrClient->createUpdate();
 
@@ -108,13 +108,12 @@ class solr_connector
         // this executes the query and returns the result
         $oSolrClient->update($update);
     }
-    
-    
-    
+
+
+
     public static function OxidSortColumns()
     {
-        $aSort = array_merge(['score'],\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aSortCols'));
+        $aSort = array_merge(['score'], \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aSortCols'));
         return $aSort;
     }
-
 }
