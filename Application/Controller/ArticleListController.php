@@ -4,7 +4,7 @@ namespace rs\solr\Application\Controller;
 
 class ArticleListController extends ArticleListController_parent
 {
-    
+
     /**
      * need information for custom templates
      * @param type $name
@@ -20,8 +20,8 @@ class ArticleListController extends ArticleListController_parent
         return $oFacetDefinition;
     }
 
-    
-    protected $_getSolrFilterSettingName=null;
+
+    protected $_getSolrFilterSettingName = null;
     /**
      * translate ids to human readable names
      * @param type $key
@@ -29,19 +29,18 @@ class ArticleListController extends ArticleListController_parent
      */
     public function getSolrFilterSettingName($key)
     {
-        if($this->_getSolrFilterSettingName===null)
-        {
+        if ($this->_getSolrFilterSettingName === null) {
             $oSolrImport = \rs\solr\Core\solr_connector::getImport();
             $this->_getSolrFilterSettingName = $oSolrImport->getAllAttributesIds();
         }
         return $this->_getSolrFilterSettingName[$key];
     }
-    
 
-    
-    
-    
-    
+
+
+
+
+
     /**
      * Loads and returns article list of active category.
      *
@@ -59,34 +58,33 @@ class ArticleListController extends ArticleListController_parent
         $iPgNr = (int) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('pgnr');
         $iPgNr = ($iPgNr < 0) ? 0 : $iPgNr;
 
-        $aFilter=\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('filter');
-        if(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('filterclear')==="1")
+        $aFilter = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('filter');
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('filterclear') === "1")
             $aFilter = null;
-        
+
         $aFacetList = oxNew(\rs\solr\Application\Model\rssolr_facets_categories_list::class);
         $aFacetList->ListByCategorie($category->getId());
-        $aFilterSettingsType=[];
-        foreach($aFacetList as $oFacet)
-        {
+        $aFilterSettingsType = [];
+        foreach ($aFacetList as $oFacet) {
             $aFilterSettingsType[$oFacet->rssolr_facets_categories__rsfacete->value] = $oFacet->rssolr_facets_categories__rstype->value;
         }
-        $aFilterSettings=array_keys($aFilterSettingsType);
+        $aFilterSettings = array_keys($aFilterSettingsType);
 
         $sSort = $this->getSortingSql($this->getSortIdent());
 
         $oSolrSearch = \rs\solr\Core\solr_connector::getSearch();
         $oSolrSearch->setSearchFilter($aFilter);
         $oSolrSearch->setLimit($numberOfCategoryArticles * $iPgNr, $numberOfCategoryArticles);
-        if($sSort!="")
+        if ($sSort != "")
             $oSolrSearch->setSortString($sSort);
-        
-        if(!empty($aFilterSettings))
+
+        if (!empty($aFilterSettings))
             $oSolrSearch->setFacetFields($aFilterSettings);
 
         $oSolrSearch->setSearchFilterFixed('oxcategories__oxid', $category->getId());
-        
-        list($iFound,$aResult, $aFacets, $sQuery, $iPages, $sError)  = $oSolrSearch->execute();
-        
+
+        list($iFound, $aResult, $aFacets, $sQuery, $iPages, $sError)  = $oSolrSearch->execute();
+
         $this->_iAllArtCnt = $iFound;
         $this->_iCntPages = ceil($this->_iAllArtCnt / $numberOfCategoryArticles);
 
@@ -103,7 +101,7 @@ class ArticleListController extends ArticleListController_parent
         $this->addTplParam("hasfilterset", $oArtList->hasSolrFilterSet());
         $this->addTplParam('filtersettings', $oArtList->getSolrFilterSettings());
         $this->addTplParam('filtersettingstype', $oArtList->getSolrFilterSettingsType());
-        
+
         return $oArtList;
     }
 
@@ -114,7 +112,7 @@ class ArticleListController extends ArticleListController_parent
     {
         if ($this->_iActPage === null) {
             $tmp = $this->getConfig()->getRequestParameter('pgnr');
-            if($tmp=="")
+            if ($tmp == "")
                 $this->getConfig()->getRequestParameter('pgNr');
             $this->_iActPage = (int) $tmp;
             $this->_iActPage = ($this->_iActPage < 0) ? 0 : $this->_iActPage;
@@ -122,10 +120,10 @@ class ArticleListController extends ArticleListController_parent
 
         return $this->_iActPage;
     }
-    
-    
-    
-#region "sort"
+
+
+
+    #region "sort"
     public function getSortColumns()
     {
         parent::getSortColumns();
@@ -175,6 +173,6 @@ class ArticleListController extends ArticleListController_parent
             return ['sortby' => $sortBy, 'sortdir' => $sortOrder];
         }
     }
-#endregion
-    
+    #endregion
+
 }

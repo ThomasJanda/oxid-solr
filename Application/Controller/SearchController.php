@@ -2,9 +2,50 @@
 
 namespace rs\solr\Application\Controller;
 
+use OxidEsales\Eshop\Core\Registry;
+
+/**
+ * Class SearchController
+ * @package rs\solr\Application\Controller
+ * @see \OxidEsales\Eshop\Application\Controller\SearchController
+ */
 class SearchController extends SearchController_parent
 {
-    
+
+    /**
+     * @throws \OxidEsales\Eshop\Core\Exception\DatabaseConnectionException
+     */
+    public function init()
+    {
+
+        /**
+         * if search parameter is exact an aricle number, redirect to it
+         */
+        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $sSearchParamForQuery = trim($oConfig->getRequestParameter('searchparam', true));
+
+        $sql="select oxid from oxarticles where oxartnum=? or oxean=?";
+        $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
+        $id = $db->getOne($sql,[$sSearchParamForQuery, $sSearchParamForQuery]);
+        /** @var \OxidEsales\Eshop\Application\Model\Article $article */
+        $article = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
+        if($article->load($id))
+        {
+            if($article->isVariant())
+            {
+                $article = $article->getParentArticle();
+            }
+            if($article)
+            {
+                $link = $article->getLink();
+                $utils = Registry::getUtils();
+                $utils->redirect($link, false, 200);
+            }
+        }
+
+        parent::init();
+    }
+
     public function render()
     {
         $ret = parent::render();

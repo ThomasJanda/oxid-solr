@@ -43,7 +43,8 @@ solrSuggest = {
             }
             if(term.length >=2 )
             {
-                o.searchResultTimer = window.setTimeout(function(term) { o.executeDisplaySearchResult(term); }, 300, term);
+                let signal = o.searchResultController.signal;
+                o.searchResultTimer = window.setTimeout(function(term, signal) { o.executeDisplaySearchResult(term, {signal}); }, 300, term, signal);
             }
         });
         
@@ -55,11 +56,11 @@ solrSuggest = {
         });
     },
 
-    executeDisplaySearchResult: function(term)
+    executeDisplaySearchResult: function(term, signal)
     {
         var o = this;
-        var searchResultController = this.searchResultController;
-        fetch(this.source + "?term=" + term, { searchResultController }).then(function(response) {
+        //var searchResultController = this.searchResultController;
+        fetch(this.source + "?term=" + term, signal ).then(function(response) {
             /* receive the full response */
             if(response.ok)
                 return response.json();
@@ -76,6 +77,7 @@ solrSuggest = {
 
             let html = o.generateLines(lines);
             o.displayResult(html);
+        }).catch(e => {
         });
     },
 
@@ -92,7 +94,7 @@ solrSuggest = {
 
             line = "<a href='" + data.link + "'>" +
                 "  <div class='suggest-image'>" +
-                "    <img src='" + data.image + "' title='" + data.title + "' />" +
+                "    <img src='" + (data.image == null?"#":data.image) + "' title='" + data.title + "' />" +
                 "  </div>" +
                 "  <div class='suggest-title'>" +
                 "    <span class='title'>" + title + "</span>" +
@@ -114,7 +116,7 @@ solrSuggest = {
             line = "<div class='suggest-group clearfix'><div>" + title + "</div>";
             data.items.forEach(function(data) {
                 line += "<a href='" + data.link + "'>" +
-                    "  <img src='" + data.image + "' title='" + data.title + "' />" +
+                    "  <img src='" + (data.image == null?"#":data.image) + "' title='" + data.title + "' />" +
                     "</a>";
             });
             line += "</div>";

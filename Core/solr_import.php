@@ -20,8 +20,7 @@ class solr_import
 
     protected $oConfig = null;
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->oSolrClient = solr_connector::getSolrClient();
         //$this->oSolrUpdate = new \rs\solr\Core\solarium\solarium_update_query();
         $this->oSolrUpdate = $this->oSolrClient->createUpdate();
@@ -79,164 +78,164 @@ class solr_import
 
         $sUrl = $oSolrClient->getEndpoint()->getBaseUri();
 
-        $aJsons = [];
+        $aJsons=[];
 
-        $aJsons[] = [
+        $aJsons[] =[
             "add-field" => [
-                "name" => "oxarticles__oxid",
+                "name" =>"oxarticles__oxid",
                 "type" => "string",
                 "stored" => true,
                 "multiValued" => false,
                 "indexed" => true
             ]
         ];
-        $aJsons[] = [
+        $aJsons[] =[
             "add-field" => [
-                "name" => "oxarticles__oxparentid",
+                "name" =>"oxarticles__oxparentid",
                 "type" => "string",
                 "stored" => true,
                 "multiValued" => false,
                 "indexed" => true
             ]
         ];
-        $aJsons[] = [
+        $aJsons[] =[
             "add-field" => [
-                "name" => "oxarticles__oxisparent",
+                "name" =>"oxarticles__oxisparent",
                 "type" => "boolean",
                 "stored" => true,
                 "multiValued" => false,
                 "indexed" => true
             ]
         ];
-        $aJsons[] = [
+        $aJsons[] =[
             "add-field" => [
-                "name" => "oxarticles__oxissearch",
+                "name" =>"oxarticles__oxissearch",
                 "type" => "boolean",
                 "stored" => true,
                 "multiValued" => false,
                 "indexed" => true
             ]
         ];
-        $aJsons[] = [
+        $aJsons[] =[
             "add-field" => [
-                "name" => "oxarticles__oxtitle",
+                "name" =>"oxarticles__oxtitle",
                 "type" => "text_general",
                 "stored" => true,
                 "multiValued" => false,
                 "indexed" => true
             ]
         ];
-        $aJsons[] = [
+        $aJsons[] =[
             "add-field" => [
-                "name" => "oxarticles__oxtitle_sort",
+                "name" =>"oxarticles__oxtitle_sort",
                 "type" => "string",
                 "stored" => true,
                 "multiValued" => false,
                 "indexed" => true
             ]
         ];
-        $aJsons[] = [
+        $aJsons[] =[
             "add-field" => [
-                "name" => "oxarticles__oxartnum",
+                "name" =>"oxarticles__oxartnum",
                 "type" => "text_general",
                 "stored" => true,
                 "multiValued" => false,
                 "indexed" => true
             ]
         ];
-        $aJsons[] = [
+        $aJsons[] =[
             "add-field" => [
-                "name" => "oxarticles__oxean",
+                "name" =>"oxarticles__oxean",
                 "type" => "text_general",
                 "stored" => true,
                 "multiValued" => false,
                 "indexed" => true
             ]
         ];
-        $aJsons[] = [
+        $aJsons[] =[
             "add-field" => [
-                "name" => "oxarticles__oxprice",
+                "name" =>"oxarticles__oxprice",
                 "type" => "string",
                 "stored" => true,
                 "multiValued" => false,
                 "indexed" => true
             ]
         ];
-        $aJsons[] = [
+        $aJsons[] =[
             "add-field" => [
-                "name" => "oxarticles__oxprice_sort",
+                "name" =>"oxarticles__oxprice_sort",
                 "type" => "pfloat",
                 "stored" => true,
                 "multiValued" => false,
                 "indexed" => true
             ]
         ];
-        $aJsons[] = [
+        $aJsons[] =[
             "add-field" => [
-                "name" => "oxarticles__oxsearchkeys",
+                "name" =>"oxarticles__oxsearchkeys",
                 "type" => "text_general",
                 "stored" => true,
                 "multiValued" => false,
                 "indexed" => true
             ]
         ];
-        $aJsons[] = [
+        $aJsons[] =[
             "add-field" => [
-                "name" => "oxarticles__oxshortdesc",
+                "name" =>"oxarticles__oxshortdesc",
                 "type" => "text_general",
                 "stored" => true,
                 "multiValued" => false,
                 "indexed" => true
             ]
         ];
-        $aJsons[] = [
+        $aJsons[] =[
             "add-field" => [
-                "name" => "oxarticles__oxvarselect",
+                "name" =>"oxarticles__oxvarselect",
                 "type" => "strings",
                 "stored" => true,
                 "multiValued" => true,
                 "indexed" => true
             ]
         ];
-        $aJsons[] = [
+        $aJsons[] =[
             "add-field" => [
-                "name" => "oxcategories__oxid",
+                "name" =>"oxcategories__oxid",
                 "type" => "string",
                 "stored" => true,
                 "multiValued" => true,
                 "indexed" => true
             ]
         ];
-        $aJsons[] = [
+        $aJsons[] =[
             "add-field" => [
-                "name" => "oxcategories_main__oxid",
+                "name" =>"oxcategories_main__oxid",
                 "type" => "string",
                 "stored" => true,
                 "multiValued" => true,
                 "indexed" => true
             ]
         ];
-        $aJsons[] = [
+        $aJsons[] =[
             "add-field" => [
-                "name" => "oxcategories__oxtitle",
+                "name" =>"oxcategories__oxtitle",
                 "type" => "text_general",
                 "stored" => true,
                 "multiValued" => false,
                 "indexed" => true
             ]
         ];
-        $aJsons[] = [
+        $aJsons[] =[
             "add-field" => [
-                "name" => "oxmanufacturers__oxid",
+                "name" =>"oxmanufacturers__oxid",
                 "type" => "string",
                 "stored" => true,
                 "multiValued" => false,
                 "indexed" => true
             ]
         ];
-        $aJsons[] = [
+        $aJsons[] =[
             "add-field" => [
-                "name" => "oxmanufacturers__oxtitle",
+                "name" =>"oxmanufacturers__oxtitle",
                 "type" => "text_general",
                 "stored" => true,
                 "multiValued" => false,
@@ -246,19 +245,22 @@ class solr_import
 
 
         $a = array_keys($this->getAttributesIds());
-        foreach ($a as $key) {
-            $aJsons[] = [
+        foreach($a as $key)
+        {
+            $aJsons[] =[
                 "add-field" => [
-                    "name" => $key,
+                    "name" =>$key,
                     "type" => "strings",
                     "stored" => true,
                     "multiValued" => true,
                     "indexed" => true
                 ]
             ];
+
         }
 
-        foreach ($aJsons as $aJson) {
+        foreach($aJsons as $aJson)
+        {
             $sJson = json_encode($aJson);
             $cli = "curl -X POST -H 'Content-type:application/json' --data-binary '{$sJson}' {$sUrl}schema";
             //echo $cli;
@@ -273,18 +275,22 @@ class solr_import
     }
 
     //protected $aSolrColumnType=[];
-    protected $_tmp_convertValue = [];
-    protected function _convertValue(string $table, string $column, $value, ?string $columnType = null)
+    protected $_tmp_convertValue=[];
+    protected function _convertValue(string $table, string $column, $value, ?string $columnType=null)
     {
         $helper = $this->getSolrHelper();
 
-        if ($columnType == null && $table != "" && $column != "") {
-            if (isset($this->_tmp_convertValue[$table . "__" . $column])) {
-                $columnType = $this->_tmp_convertValue[$table . "__" . $column];
-            } else {
+        if($columnType==null && $table!="" && $column!="")
+        {
+            if(isset($this->_tmp_convertValue[$table."__".$column]))
+            {
+                $columnType=$this->_tmp_convertValue[$table."__".$column];
+            }
+            else
+            {
                 $oConfig = $this->getConfig();
                 $oDb = $this->getDb();
-                $sSql = "SELECT 
+                $sSql="SELECT 
                 DATA_TYPE
                 FROM INFORMATION_SCHEMA.COLUMNS 
                 WHERE table_name = '$table'
@@ -292,7 +298,7 @@ class solr_import
                 and TABLE_SCHEMA='{$oConfig->getShopConfVar('dbName')}'";
                 $columnType = strtolower($oDb->getOne($sSql));
 
-                $this->_tmp_convertValue[$table . "__" . $column] = $columnType;
+                $this->_tmp_convertValue[$table."__".$column]=$columnType;
             }
 
 
@@ -322,34 +328,54 @@ class solr_import
         }
 
 
-        if ($value === null) {
-            $value = null;
+        if($value===null)
+        {
+            $value=null;
         }
-        if ($columnType === "tinyint") {
-            $value = (bool)$value;
-        } elseif ($columnType === "int") {
-            $value = (int)$value;
-        } elseif ($columnType === "datetime" || $columnType === "timestamp") {
-            if ($value == "0000-00-00 00:00:00") {
-                $value = null;
-            } else {
+        if($columnType==="tinyint")
+        {
+            $value=(bool)$value;
+        }
+        elseif($columnType==="int")
+        {
+            $value=(int)$value;
+        }
+        elseif($columnType==="datetime" || $columnType==="timestamp")
+        {
+            if($value=="0000-00-00 00:00:00")
+            {
+                $value=null;
+            }
+            else
+            {
                 $value = $helper->formatDate($value);
             }
-        } elseif ($columnType === "date") {
-            if ($value == "0000-00-00") {
-                $value = null;
-            } else {
-                $value = $helper->formatDate($value . " 00:00:00");
+        }
+        elseif($columnType==="date")
+        {
+            if($value=="0000-00-00")
+            {
+                $value=null;
             }
-        } elseif ($columnType === "double" || $columnType === "float") {
-            if ($value === null)
-                $value = 0;
+            else
+            {
+                $value = $helper->formatDate($value." 00:00:00");
+            }
+        }
+        elseif($columnType==="double" || $columnType==="float")
+        {
+            if($value===null)
+                $value=0;
             $value = (float) $value;
-        } elseif ($columnType === "string") {
+        }
+        elseif($columnType==="string")
+        {
             //do nothing
-            $value = $value;
-        } else {
-            $value = $helper->escapeTerm($value ?? "");
+            $value=$value;
+        }
+        else
+        {
+            $value = $helper->escapeTerm($value??"");
         }
 
         return $value;
@@ -361,17 +387,19 @@ class solr_import
         $bVariants = true;
 
         /** @var \OxidEsales\Eshop\Application\Model\Article $oArt */
-        $oArt = oxNew('oxArticle');
-        $sView = getViewName("oxarticles");
-        $where = $oArt->getActiveCheckQuery();
-        if ($bStockCheck) {
-            $where .= " " . $oArt->getStockCheckQuery() . " ";
+        $oArt=oxNew('oxArticle');
+        $sView=getViewName("oxarticles");
+        $where=$oArt->getActiveCheckQuery();
+        if($bStockCheck)
+        {
+            $where.=" ".$oArt->getStockCheckQuery()." ";
         }
-        if (!$bVariants) {
-            $where .= " and $sView.oxparentid='' ";
+        if(!$bVariants)
+        {
+            $where.=" and $sView.oxparentid='' ";
         }
-        $where = " (" . $where . ") and $sView.oxid<>'' ";
-        $sSql = "select oxid from $sView where " . $where;
+        $where=" (".$where.") and $sView.oxid<>'' ";
+        $sSql="select oxid from $sView where ".$where;
         return $sSql;
     }
 
@@ -379,21 +407,23 @@ class solr_import
     {
         //attributes
         $sTable = "oxattribute";
-        $sSql = "select 
+        $sSql="select 
         oxattribute.oxid,
         oxattribute.oxtitle
         from oxattribute
         join oxobject2attribute on oxattribute.oxid=oxobject2attribute.oxattrid
-        where oxobject2attribute.oxobjectid in (" . $this->getArticleSql() . ")
+        where oxobject2attribute.oxobjectid in (".$this->getArticleSql().")
         group by oxattribute.oxid
         order by oxattribute.oxtitle
         ";
         $aRowsData = $this->getDb()->getAll($sSql);
-        if (count($aRowsData)) {
-            foreach ($aRowsData as $aRowData) {
+        if(count($aRowsData))
+        {
+            foreach($aRowsData as $aRowData)
+            {
                 $aRowData = array_change_key_case($aRowData);
-                $key = $sTable . "__" . $aRowData['oxid'];
-                $a[$key] = $aRowData['oxtitle'];
+                $key = $sTable."__".$aRowData['oxid'];
+                $a[$key]=$aRowData['oxtitle'];
             }
         }
 
@@ -414,7 +444,7 @@ class solr_import
         return array_merge($a, $this->getAttributesIds());
     }
 
-    public function import(int $iStart = 0, int $iOffset = 10)
+    public function import(int $iStart=0, int $iOffset=10)
     {
         $bContinue = false;
         /*
@@ -424,16 +454,18 @@ class solr_import
         }
         */
 
-        $sSql = $this->getArticleSql() . " limit " . $iStart . "," . $iOffset;
-        if ($aRows = $this->getDb()->getAll($sSql)) {
-            $aDocuments = [];
+        $sSql=$this->getArticleSql()." limit ".$iStart.",".$iOffset;
+        if($aRows = $this->getDb()->getAll($sSql))
+        {
+            $aDocuments=[];
 
-            foreach ($aRows as $aRow) {
+            foreach($aRows as $aRow)
+            {
                 $aRow = array_change_key_case($aRow);
                 $sArticleOxid = $aRow['oxid'];
 
                 $aDocuments[] = $this->generateArticle($sArticleOxid);
-                $bContinue = true;
+                $bContinue=true;
             }
 
             //add documents and commit
@@ -452,19 +484,20 @@ class solr_import
     }
 
 
-    public function update(int $iOffset = 10)
+    public function update(int $iOffset=10)
     {
         $bContinue = false;
 
-        $sSql = "select rssolr_update_articles.oxid, if(oxarticles.oxid is null,0,1) as art 
+        $sSql="select rssolr_update_articles.oxid, if(oxarticles.oxid is null,0,1) as art 
         from rssolr_update_articles left join oxarticles on oxarticles.oxid=rssolr_update_articles.oxid
-        limit 0," . $iOffset;
-        if ($aRows = $this->getDb()->getAll($sSql)) {
+        limit 0,".$iOffset;
+        if($aRows = $this->getDb()->getAll($sSql))
+        {
             /* delete all */
             // delete product in solr
             // get an update query instance
             $update = $this->getSolrUpdate();
-            foreach ($aRows as $aRow) {
+            foreach($aRows as $aRow) {
 
                 $aRow = array_change_key_case($aRow);
 
@@ -476,21 +509,25 @@ class solr_import
 
 
             // delete product in table
-            foreach ($aRows as $aRow) {
+            foreach($aRows as $aRow)
+            {
                 $aRow = array_change_key_case($aRow);
-                $sSql = "delete from rssolr_update_articles where oxid=?";
+                $sSql="delete from rssolr_update_articles where oxid=?";
                 $this->getDb()->execute($sSql, [$aRow['oxid']]);
             }
 
-            $aDocuments = [];
-            foreach ($aRows as $aRow) {
+            $aDocuments=[];
+            foreach($aRows as $aRow)
+            {
                 $aRow = array_change_key_case($aRow);
-                if ($aRow['art'] == "1") {
+                if($aRow['art']=="1")
+                {
                     $aDocuments[] = $this->generateArticle($aRow['oxid']);
                 }
             }
 
-            if (count($aDocuments) > 0) {
+            if(count($aDocuments)>0)
+            {
                 //add documents and commit
                 $update = $this->getSolrUpdate();
                 $update->addDocuments($aDocuments);
@@ -499,7 +536,7 @@ class solr_import
                 $this->getSolrClient()->update($update);
             }
 
-            $bContinue = true;
+            $bContinue=true;
         }
 
         return $bContinue;
@@ -509,7 +546,7 @@ class solr_import
     protected function generateArticle($sArticleOxid)
     {
         $oData = $this->getSolrUpdate()->createDocument();
-        $oData->id = $sArticleOxid;
+        $oData->id=$sArticleOxid;
         $this->generateDataArticle($oData, $sArticleOxid);
         $this->generateDataCategory($oData, $sArticleOxid);
         $this->generateManufacturer($oData, $sArticleOxid);
@@ -520,12 +557,12 @@ class solr_import
     protected function generateDataArticle(&$oData, string $sArticleOxid)
     {
         //article
-        $oArt = oxNew('oxArticle');
-        $sView = $oArt->getViewName();
+        $oArt=oxNew('oxArticle');
+        $sView=$oArt->getViewName();
         $sTable = "oxarticles";
         $sTable_parent = "oxarticles_parent";
 
-        $sSql = "select 
+        $sSql="select 
         if($sTable_parent.oxid is null,$sTable.oxid,$sTable_parent.oxid) as oxid,
         if($sTable_parent.oxid is null,$sTable.oxid,$sTable.oxparentid) as oxparentid, 
         if($sTable_parent.oxid is null,1,0) as oxisparent, 
@@ -539,24 +576,29 @@ class solr_import
         $sTable.oxsearchkeys, 
         $sTable.oxshortdesc, 
         $sTable.oxvarselect 
-        from " . getViewName($sTable) . " $sTable 
-        left join " . getViewName($sTable) . " $sTable_parent on $sTable_parent.oxid=$sTable.oxparentid and oxarticles_parent.oxid<>''
+        from ".getViewName($sTable)." $sTable 
+        left join ".getViewName($sTable)." $sTable_parent on $sTable_parent.oxid=$sTable.oxparentid and oxarticles_parent.oxid<>''
         where $sTable.oxid=?";
-        $aRowData = array_change_key_case($this->getDb()->getRow($sSql, [$sArticleOxid]));
-        foreach ($aRowData as $key => $value) {
-            if ($key == "oxvarselect") {
-                $value = explode("|", $value);
+        $aRowData = array_change_key_case($this->getDb()->getRow($sSql,[$sArticleOxid]));
+        foreach($aRowData as $key=>$value)
+        {
+            if($key=="oxvarselect")
+            {
+                $value = explode("|",$value);
                 $value = array_map("trim", $value);
 
                 $tmp = [];
-                foreach ($value as $v) {
+                foreach($value as $v)
+                {
                     $tmp[] = $this->_convertValue($sTable, $key, $v, "string");
                 }
                 $value = $tmp;
-            } else {
+            }
+            else
+            {
                 $value = $this->_convertValue($sTable, $key, $value);
             }
-            $key = $sTable . "__" . $key;
+            $key = $sTable."__".$key;
             $oData->$key = $value;
         }
     }
@@ -565,77 +607,80 @@ class solr_import
 
         //main categorie
         $sTable = "oxcategories";
-        $sSql = "select oxtitle from " . getViewName($sTable) . " $sTable 
+        $sSql="select oxtitle from ".getViewName($sTable)." $sTable 
         where oxid = (
             select 
             oxobject2category.oxcatnid 
             from oxobject2category 
             where oxobject2category.oxobjectid=(
                 select if(oxparentid is null or oxparentid='',oxid,oxparentid) 
-                from " . getViewName('oxarticles') . " oxarticles where oxid=?
+                from ".getViewName('oxarticles')." oxarticles where oxid=?
             ) order by oxtime asc
             limit 0,1
         )";
-        $value = $this->getDb()->getOne($sSql, [$sArticleOxid]);
+        $value = $this->getDb()->getOne($sSql,[$sArticleOxid]);
         //only the first i need the title
         $value = $this->_convertValue($sTable, "oxtitle", $value);
-        $key = $sTable . "__oxtitle";
+        $key = $sTable."__oxtitle";
         $oData->$key = $value;
 
 
-        $sSql = "select oxid from " . getViewName($sTable) . " $sTable 
+        $sSql="select oxid from ".getViewName($sTable)." $sTable 
         where oxid in (
             select 
             oxobject2category.oxcatnid 
             from oxobject2category 
             where oxobject2category.oxobjectid=(
                 select if(oxparentid is null or oxparentid='',oxid,oxparentid) 
-                from " . getViewName('oxarticles') . " oxarticles where oxid=?
+                from ".getViewName('oxarticles')." oxarticles where oxid=?
             ) order by oxtime asc
         )";
-        $values = array_change_key_case($this->getDb()->getCol($sSql, [$sArticleOxid]));
+        $values = array_change_key_case($this->getDb()->getCol($sSql,[$sArticleOxid]));
 
         $tmp = [];
-        foreach ($values as $value) {
+        foreach($values as $value)
+        {
             $tmp[] = $this->_convertValue($sTable, "oxid", $value);
         }
 
-        $key = $sTable . "__oxid";
+        $key = $sTable."__oxid";
         $oData->$key = $tmp;
 
-        $sSql = "select oxrootid from " . getViewName($sTable) . " $sTable 
+        $sSql="select oxrootid from ".getViewName($sTable)." $sTable 
         where oxid in (
             select 
             oxobject2category.oxcatnid 
             from oxobject2category 
             where oxobject2category.oxobjectid=(
                 select if(oxparentid is null or oxparentid='',oxid,oxparentid) 
-                from " . getViewName('oxarticles') . " oxarticles where oxid=?
+                from ".getViewName('oxarticles')." oxarticles where oxid=?
             ) order by oxtime asc
         ) group by oxrootid";
-        $values = array_change_key_case($this->getDb()->getCol($sSql, [$sArticleOxid]));
+        $values = array_change_key_case($this->getDb()->getCol($sSql,[$sArticleOxid]));
 
         $tmp = [];
-        foreach ($values as $value) {
+        foreach($values as $value)
+        {
             $tmp[] = $this->_convertValue($sTable, "oxrootid", $value);
         }
 
-        $key = $sTable . "_main__oxid";
+        $key = $sTable."_main__oxid";
         $oData->$key = $tmp;
     }
     protected function generateManufacturer(&$oData, string $sArticleOxid)
     {
         //manufacturer
         $sTable = "oxmanufacturers";
-        $sSql = "select oxid, oxtitle
-        from " . getViewName($sTable) . " $sTable 
+        $sSql="select oxid, oxtitle
+        from ".getViewName($sTable)." $sTable 
         where oxid = (
-            select oxmanufacturerid from " . getViewName('oxarticles') . " oxarticles where if(oxparentid is null or oxparentid='',oxid,oxparentid) = ? limit 0,1
+            select oxmanufacturerid from ".getViewName('oxarticles')." oxarticles where if(oxparentid is null or oxparentid='',oxid,oxparentid) = ? limit 0,1
         )";
-        $aRowData = array_change_key_case($this->getDb()->getRow($sSql, [$sArticleOxid]));
-        foreach ($aRowData as $key => $value) {
+        $aRowData = array_change_key_case($this->getDb()->getRow($sSql,[$sArticleOxid]));
+        foreach($aRowData as $key=>$value)
+        {
             $value = $this->_convertValue($sTable, $key, $value);
-            $key = $sTable . "__" . $key;
+            $key = $sTable."__".$key;
             $oData->$key = $value;
         }
     }
@@ -645,32 +690,38 @@ class solr_import
 
         //attributes
         $sTable = "oxattribute";
-        $sSql = "select 
+        $sSql="select 
         oxattribute.oxid,
         oxattribute.oxtitle, 
         oxattribute.oxpos, 
         oxobject2attribute.oxvalue
-        from " . getViewName($sTable) . " $sTable
+        from ".getViewName($sTable)." $sTable
         join oxobject2attribute on oxattribute.oxid=oxobject2attribute.oxattrid
         where oxobject2attribute.oxobjectid=?
         order by oxattribute.oxpos";
-        $aRowsData = $this->getDb()->getAll($sSql, [$sArticleOxid]);
-        if (count($aRowsData)) {
-            foreach ($aRowsData as $aRowData) {
+        $aRowsData = $this->getDb()->getAll($sSql,[$sArticleOxid]);
+        if(count($aRowsData))
+        {
+            foreach($aRowsData as $aRowData)
+            {
                 $aRowData = array_change_key_case($aRowData);
                 $tmp = [];
 
-                if ($sep != "") {
-                    $values = array_map('trim', explode($sep, ($aRowData['oxvalue'] ?? "")));
+                if($sep!="")
+                {
+                    $values = array_map('trim',explode($sep,($aRowData['oxvalue']??"")));
 
-                    foreach ($values as $v) {
+                    foreach($values as $v)
+                    {
                         $tmp[] = $this->_convertValue("", "", $v, "string");
                     }
-                } else {
+                }
+                else
+                {
                     $tmp[] = $this->_convertValue("", "", $aRowData['oxvalue'], "string");
                 }
 
-                $key = $sTable . "__" . $aRowData['oxid'];
+                $key = $sTable."__".$aRowData['oxid'];
                 $oData->$key = $tmp;
             }
         }

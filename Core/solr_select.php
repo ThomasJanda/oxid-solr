@@ -77,16 +77,23 @@ class solr_select
             $sPhrase = str_replace($special_characters,' ',$sPhrase);
                         
             $aPhrases = array_filter(array_map('trim',explode(" ",trim($sPhrase))));
+            $sPhraseFull = implode(" ",$aPhrases);
+
             $aColumns = self::aDefaultSearchColumn;
 
             $aQuery = [];
             foreach($aColumns as $sColumn => $fPrio)
             {
+                if(count($aPhrases)>1)
+                {
+                    $aQuery[] = $sColumn.":(\"".$sPhraseFull."\"~5)^".$fPrio;
+                }
+
                 foreach($aPhrases as $sPhrase)
                 {
                     $sPhrase = trim($this->oSolrHelper->escapePhrase($sPhrase),'"');
 
-                    $aQuery[] = $sColumn.":(".$sPhrase."~)^".$fPrio;
+                    $aQuery[] = $sColumn.":(".$sPhrase."~5)^".$fPrio;
                     $aQuery[] = $sColumn.":(*".$sPhrase."*)^".$fPrio;
                 }
 
@@ -98,7 +105,6 @@ class solr_select
             $sQuery = implode(" or ", $aQuery);
             $this->sCachePhrase=$sQuery;
         }
-
         $this->oSolrQuery->setQuery($sQuery??"*");
     }
     public function setSearchFilter($aFilter)
@@ -255,6 +261,8 @@ class solr_select
 
         $oSolrBuilder = $this->oSolrQuery->getRequestBuilder()->build($this->oSolrQuery);
         $sQuery = urldecode($oSolrBuilder->getQueryString());
+
+        //die($sQuery);
 
         //full caching
         $sPathCacheFull = $this->getCacheDirectory()."/full_".md5($sQuery);

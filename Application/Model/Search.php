@@ -73,13 +73,11 @@ class Search extends Search_parent
         $oSolrSearch = \rs\solr\Core\solr_connector::getSearch();
         $oSolrSearch->setSearchPhrase($sSearchParamForQuery);
         $oSolrSearch->setLimit(0, $iNrofCatArticles);
-        $oSolrSearch->setSortString("score@@asc");
+        $oSolrSearch->setSortString("score@@desc");
         $oSolrSearch->setFacetFields($aFilterSettings);
 
-        
         list($iFound,$aResult, $aFacets, $sQuery, $iPages, $sError)  = $oSolrSearch->execute();
         $this->_iSolrCount = $iFound;
-        //die($sQuery);
         
         $oArtList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
         $oArtList->loadIdsAndSort($aResult);
